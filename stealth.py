@@ -21,9 +21,12 @@ list폴더, link폴더 자동지정 경로
 """
 import os, shutil, hashlib
 import win32api, win32con
+import encrypt
+
 
 def get_hashed_path(path):
     return hashlib.sha256(path.encode()).hexdigest()
+
 
 def create_list_file(path, key):
     if not os.path.isdir(_list_directory):
@@ -36,12 +39,14 @@ def create_list_file(path, key):
     tmp_file = os.path.join(_list_directory, tmp_file_name)
     return tmp_file
 
+
 # stealth 기능
 def do_stealth(path, key):
     global f # 주어진 인자 path에 대해서 수행되는 모든 링크 내용을 기록하는 파일
     
     path = os.path.abspath(path)
     tmp_file = create_list_file(path, key)
+    key = encrypt.make_pass(path, key)
     f = open(tmp_file, 'w')
     file_or_folder = 'folder' if os.path.isdir(path) else 'file'
     f.write('{} {}\n'.format(key, file_or_folder)) # 첫줄 key
@@ -55,13 +60,20 @@ def do_stealth(path, key):
 
     if not rtn:
         os.remove(tmp_file)
+        return False
+    
+    if not encrypt.encrypt_file(key, tmp_file): # 암호화 실패
+        # print('fail!')
+        os.remove(tmp_file) # 추가 삭제 필요 ###########################
+        return False
+
     elif rtn and os.path.isfile(path):
         os.remove(path)
     elif rtn and os.path.isdir(path):
         shutil.rmtree(path)
-    
-    # list파일 암호화
+
     return rtn
+
 
 def file_stealth(path):
     try:
@@ -106,7 +118,7 @@ def dir_stealth(path):
     return True
 
 
-def find_list(path, key):
+def find_list(path):
     if not os.path.isdir(_list_directory):
         return None
     
@@ -129,17 +141,21 @@ def un_stealth(path, key):
         return False
 
     # 저장되어있는 list file 검색
-    tmp_file = find_list(path, key)
+    tmp_file = find_list(path)
     if not tmp_file: return False
 
     # list파일을 복호화
-    # 코드 작성 필요 ######################################################
+    key = encrypt.make_pass(path, key)
+    encrypt.decrypt_file(key, tmp_file)
 
     # list파일에서 읽어와서 모든 파일, 폴더에 대해서 역으로 복구
     f = open(tmp_file, 'r')
     # 첫줄 키가 일치한지 확인
     first = f.readline().rstrip().split()
-    if key != first[0]: return False
+    if str(key) != first[0]: 
+        print(first[0])
+        print("different key")
+        return False
 
     # 복구 대상이 디렉토리이면 생성
     if first[1] == 'folder':
@@ -176,11 +192,13 @@ def un_stealth(path, key):
 
 
 
-# 경로 하드코딩말고..#########################################################
-# _list_directory = "C:/Users/psm34/Desktop/capstone/list" 
-# _link_directory = "C:/Users/psm34/Desktop/capstone/link"
+# 경로 하드코딩말고 링크 파일 위치 만드는 거는 #########################################################
 _list_directory = os.path.join(os.getcwd(), '../list') #"C:/Users/psm34/Desktop/capstone/list" 
+# _link_directory = os.path.join(os.getcwd(), 'C:/Users/psm34/Desktop/Documents.{450D8FBA-AD25-11D0-98A8-0800361B1103}') #"C:/Users/psm34/Desktop/capstone/link"
 _link_directory = os.path.join(os.getcwd(), '../link') #"C:/Users/psm34/Desktop/capstone/link"
 
-do_stealth("C:/Users/psm34/Desktop/capstone/test1", 'tempkey') 
-# un_stealth("C:/Users/psm34/Desktop/capstone/test1", 'tempkey')
+# do_stealth("C:/Users/psm34/Desktop/capstone/test1", 'tempkey') 
+un_stealth("C:/Users/psm34/Desktop/capstone/test1", 'tempkey')
+
+# C:/Users/psm34/AppData/LocalLow/Documents.{}
+# C:/Users/Default/Links

@@ -20,6 +20,7 @@ def decrypt_file(key, input_file, chunksize=24 * 1024):
                         break
                     outfile.write(decryptor.decrypt(chunk))
                 outfile.truncate(origsize)
+
         os.remove(input_file)
         os.rename(output_file, input_file)
         return True
@@ -45,6 +46,7 @@ def encrypt_file(key, input_file, chunksize=65536):
                     elif len(chunk) % 16 != 0:
                         chunk += ' '.encode() * (16 - len(chunk) % 16)
                     outfile.write(encryptor.encrypt(chunk))
+                    
         os.remove(input_file)
         os.rename(output_file, input_file)
         return True

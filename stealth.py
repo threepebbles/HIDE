@@ -34,7 +34,6 @@ def create_list_file(path, key):
     if not os.path.isdir(_link_directory):
         os.mkdir(_link_directory)
 
-    # tmp_file = _list_directory + '/' + hash(path) # 은닉하려는 경로의 해시를 이용해서 파일이름을 생성 ######
     tmp_file_name = get_hashed_path(path + key)
     tmp_file = os.path.join(_list_directory, tmp_file_name)
     return tmp_file
@@ -112,7 +111,6 @@ def dir_stealth(path):
         for folder in dirs:
             # 폴더 경로 저장
             # [DIR, 폴더속성, 폴더경로]
-            # 폴더 옵션 설정 못찾음 #######################
             folderpath = os.path.join(rootpath, folder)
             f.write("DIR?{}?{}\n".format(win32api.GetFileAttributes(folderpath), folderpath))
     return True
@@ -136,7 +134,8 @@ def un_stealth(path, key):
 
     # _list_directory 밑에 path의 해시값과 일치하는 파일이 존재하는지 확인
     path = os.path.abspath(path)
-    tmp_file_name = get_hashed_path(path + key)
+    tmp_file_name = get_hashed_path(path + 'tempkey')
+    # tmp_file_name = get_hashed_path(path + key)
     if not os.path.isfile(os.path.join(_list_directory, tmp_file_name)):
         return False
 
@@ -146,15 +145,28 @@ def un_stealth(path, key):
 
     # list파일을 복호화
     key = encrypt.make_pass(path, key)
-    encrypt.decrypt_file(key, tmp_file)
+    if not encrypt.decrypt_file(key, tmp_file):
+        print('decrypt error')
+        return False
 
     # list파일에서 읽어와서 모든 파일, 폴더에 대해서 역으로 복구
     f = open(tmp_file, 'r')
-    # 첫줄 키가 일치한지 확인
-    first = f.readline().rstrip().split()
+    try:
+        # 첫줄 키가 일치한지 확인
+        first = f.readline().rstrip().split()
+    except Exception as e:
+        print(e)
+        f.close()
+        encrypt.encrypt_file(key, tmp_file)
+        return False
+
     if str(key) != first[0]: 
-        print(first[0])
         print("different key")
+        f.close()
+        #
+        shutil.copy(tmp_file, tmp_file+'1')
+        #
+        encrypt.encrypt_file(key, tmp_file)
         return False
 
     # 복구 대상이 디렉토리이면 생성
@@ -194,11 +206,8 @@ def un_stealth(path, key):
 
 # 경로 하드코딩말고 링크 파일 위치 만드는 거는 #########################################################
 _list_directory = os.path.join(os.getcwd(), '../list') #"C:/Users/psm34/Desktop/capstone/list" 
-# _link_directory = os.path.join(os.getcwd(), 'C:/Users/psm34/Desktop/Documents.{450D8FBA-AD25-11D0-98A8-0800361B1103}') #"C:/Users/psm34/Desktop/capstone/link"
-_link_directory = os.path.join(os.getcwd(), '../link') #"C:/Users/psm34/Desktop/capstone/link"
+_link_directory = os.path.abspath(os.path.join(os.path.join('C:/Users/' + os.getenv('USERNAME')), 'Links/link.{59031a47-3f72-44a7-89c5-5595fe6b30ee}'))
+# _link_directory = os.path.join(os.getcwd(), '../link') #"C:/Users/psm34/Desktop/capstone/link"
 
 # do_stealth("C:/Users/psm34/Desktop/capstone/test1", 'tempkey') 
 un_stealth("C:/Users/psm34/Desktop/capstone/test1", 'tempkey')
-
-# C:/Users/psm34/AppData/LocalLow/Documents.{}
-# C:/Users/Default/Links

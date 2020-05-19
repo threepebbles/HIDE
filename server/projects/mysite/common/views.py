@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
-from common.forms import UserForm, LoginSuccessForm
+from common.forms import UserForm
 
 
 def signup(request):
@@ -18,7 +18,7 @@ def signup(request):
             login(request, user)
 
 
-            return render(request, 'HIDE/question_list.html', LoginSuccessForm(request.POST))
+            return render(request, 'HIDE/question_list.html', {'login_state':'success'})
     else:
         form = UserForm()
     return render(request, 'common/signup.html', {'form': form})

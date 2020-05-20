@@ -30,6 +30,13 @@ ALLOWED_HOSTS = ["127.0.0.1", "34.64.186.183"]
 INSTALLED_APPS = [
     'common.apps.CommonConfig',
     'HIDE.apps.HideConfig',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'rest_auth',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'rest_auth.registration',
 
     'django.contrib.admin',
     'django.contrib.auth',

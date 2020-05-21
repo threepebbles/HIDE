@@ -1,13 +1,7 @@
 from django.shortcuts import render
-#
-# from django.http import HttpResponse
-# import json
-#
-# def index(request):
-#     response = {}
-#     response['key'] = 'needs'
-#     return HttpResponse(json.dumps(response), content_type="apllication/json")
-#     # return render(request, 'hide/home.html')
+from rest_framework import viewsets
+from .models import HideList
+from .serializers import HideListSeirializer
 
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import status
@@ -24,3 +18,7 @@ def index(request):
     #
     # return response
     return render(request, 'hide/home.html')
+
+class HideList_restful_main(viewsets.ModelViewSet):
+    queryset = HideList.objects.all()
+    serializer_class = HideListSeirializer

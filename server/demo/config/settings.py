@@ -38,13 +38,13 @@ INSTALLED_APPS = (
     'rest_framework',
     'rest_framework.authtoken',
     'rest_auth',
-
     'allauth',
     'allauth.account',
     'rest_auth.registration',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
     'rest_framework_swagger',
+    'hide'
 )
 
 MIDDLEWARE = (
@@ -120,8 +120,9 @@ ACCOUNT_EMAIL_VERIFICATION = 'optional' # email verification은 안해도 로그
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework.authentication.TokenAuthentication',
     )
 }
 
@@ -132,3 +133,5 @@ SWAGGER_SETTINGS = {
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+REST_USE_JWT = True

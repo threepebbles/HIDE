@@ -121,8 +121,8 @@ ACCOUNT_EMAIL_VERIFICATION = 'optional' # email verification은 안해도 로그
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-        # 'rest_framework.authentication.SessionAuthentication',
-        # 'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
     )
 }
 
@@ -134,4 +134,4 @@ SWAGGER_SETTINGS = {
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
-REST_USE_JWT = True
+# REST_USE_JWT = True

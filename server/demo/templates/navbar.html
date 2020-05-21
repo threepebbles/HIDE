@@ -12,9 +12,9 @@
                     {% else %}
                     <a href="{% url 'common:login' %}">please login</a>
                     {% endif %}
-
-                <li class="divider"></li>
                 </li>
+                <li class="divider"></li>
+
                 <!-- these pages don't require user token -->
                 <li><a href="{% url 'common:signup' %}">Signup</a></li>
                 <li><a href="{% url 'common:email_verification' %}">E-mail verification</a></li>

@@ -1,6 +1,6 @@
 {% block content %}
 
-  <form class="form-horizontal ajax-post" role="form" action="{% url 'rest_logout' %}">
+  <form class="form-horizontal ajax-post" role="form" action="{% url 'rest_logout' %}" method="post">
     <div class="form-group">
       <label for="token" class="col-sm-2 control-label">User Token</label>
       <div class="col-sm-4">

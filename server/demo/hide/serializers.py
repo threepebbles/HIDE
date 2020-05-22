@@ -1,8 +1,8 @@
-from .models import HideList
+from .models import Myfile
 from rest_framework import serializers
 
-class HideListSeirializer(serializers.HyperlinkedModelSerializer):
+class MyfileSeirializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = HideListfields = (
-            'index', 'file_path', 'state', 'priority'
+        model = Myfilefields = (
+            'index', 'file_path', 'state', 'author'
         )

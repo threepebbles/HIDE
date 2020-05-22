@@ -44,7 +44,7 @@ INSTALLED_APPS = (
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
     'rest_framework_swagger',
-    'hide'
+    'hide.apps.HideConfig',
 )
 
 MIDDLEWARE = (
@@ -120,7 +120,7 @@ ACCOUNT_EMAIL_VERIFICATION = 'optional' # email verification은 안해도 로그
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        # 'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     )

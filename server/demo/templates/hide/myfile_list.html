@@ -13,7 +13,7 @@
         </div>
     </div>
     <!--검색창 끝-->
-    
+
     <table class="table">
         <thead>
         <tr class="text-center thead-dark">
@@ -36,7 +36,13 @@
             <td class="text-left">
                 {{ myfile.file_path }}
             </td>
-            <td class="text-left">{{ myfile.state }}</td>  <!-- author 추가 -->
+            <td class="text-left">
+                {% if myfile.state == True %}
+                on
+                {% else %}
+                off
+                {% endif %}
+            </td>  <!-- author 추가 -->
             <td class="text-left">{{ myfile.author.username }}</td>  <!-- author 추가 -->
             <td class="text-left">
                 <a href="{% url 'hide:myfile_modify' myfile.author.id myfile.index %}"

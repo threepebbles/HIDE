@@ -26,7 +26,7 @@ def myfile_create(request):
             # create success
             else:
                 myfile.save()
-                return redirect('hide:index')
+                return redirect('hide:myfile_list')
 
             # return redirect('hide:index')
     else:
@@ -60,7 +60,7 @@ def myfile_modify(request, current_author_id, myfile_index):
             # create success
             else:
                 myfile.save()
-                return redirect('hide:index')
+                return redirect('hide:myfile_list')
     else:
         form = MyfileForm(instance=myfile)
     context = {'form': form}
@@ -74,4 +74,4 @@ def myfile_delete(request, current_author_id):
     """
 
     Myfile.objects.filter(author_id=current_author_id).delete()
-    return redirect('hide:index')
+    return redirect('hide:myfile_list')

@@ -8,8 +8,10 @@ from ..models import Myfile
 
 logger = logging.getLogger('hide')
 
-
 def index(request):
+    return render(request, 'hide/home.html')
+
+def myfile_list(request):
     """
     hide 목록 출력
     """
@@ -34,4 +36,4 @@ def index(request):
 
     context = {'myfile_list': page_obj, 'page': page, 'kw': kw}
 
-    return render(request, 'hide/home.html', context)
+    return render(request, 'hide/myfile_list.html', context)

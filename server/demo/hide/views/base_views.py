@@ -34,4 +34,4 @@ def index(request):
 
     context = {'myfile_list': page_obj, 'page': page, 'kw': kw}
 
-    return render(request, 'hide/myfile_list.html', context)
+    return render(request, 'hide/home.html', context)

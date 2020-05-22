@@ -42,7 +42,7 @@ def myfile_modify(request, current_author_id, myfile_index):
     """
     # myfile = Myfile.objects.filter(author_id=current_author_id, index=myfile_index)
     myfile = get_object_or_404(Myfile, index=myfile_index)
-    
+
     if request.user != myfile.author:
         messages.error(request, '수정권한이 없습니다')
         return redirect('hide:index')

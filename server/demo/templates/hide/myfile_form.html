@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container">
-    <h5 class="my-3 border-bottom pb-2">파일등록</h5>
+    <h5 class="my-3 border-bottom pb-2">파일 등록</h5>
     <form method="post" class="post-form my-3">
         <!-- 오류표시 Start -->
         {% if form.errors %}
@@ -31,8 +31,8 @@
 
         <div class="form-group">
             <label for="state">on/off state</label>
-            <input type="text" class="form-control" name="state" id="state"
-                   value="">
+            <input type="checkbox" class="form-control" name="state" id="state"
+                   value="n">
         </div>
 
         <button type="submit" class="btn btn-primary">저장하기</button>

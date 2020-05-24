@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class WebViewActivity extends AppCompatActivity {
     private WebView mWebView;
     private WebSettings mWebSettings;
-    private String mUrl = "https://google.com";
+    private String mUrl = "http://34.64.186.183:8000/";
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);

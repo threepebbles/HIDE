@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/UserInfoButton"
+            android:text="정보"
+            android:textStyle="bold"
+            android:textColor="#ffffff"
+            android:textSize="18dp"
+            android:background="@color/ColorSilver"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/ListButton"
+            android:text="리스트"
+            android:textStyle="bold"
+            android:textColor="#ffffff"
+            android:textSize="18dp"
+            android:background="@color/ColorSilver"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/LogoutButton"
+            android:text="로그아웃"
+            android:textStyle="bold"
+            android:textColor="#ffffff"
+            android:textSize="18dp"
+            android:background="@color/ColorSilver"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"/>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/notice">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:orientation="vertical"
+                android:background="#B9B7B8"
+                android:layout_marginTop="8dp">
+
+                <ImageView
+                    android:layout_width="125dp"
+                    android:layout_height="125dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:src="@drawable/mascort"/>
+
+                ,<TextView
+                android:id="@+id/helloUser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="환영합니다!"
+                android:textColor="#ffd700"
+                android:textSize="25dp"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"/>
+            </LinearLayout>
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/pathListView"
+                android:layout_margin="10dp"
+                android:dividerHeight="10dp"
+                android:divider="#ffffff"/>
+
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/fragment">
+
+        </RelativeLayout>
+
+    </FrameLayout>
+
+</LinearLayout>

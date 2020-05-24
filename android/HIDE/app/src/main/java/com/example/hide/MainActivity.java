@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -33,22 +34,26 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view){
-                String userName = userId.getText().toString();
-                String passWord = userPw.getText().toString();
+                final String userName = userId.getText().toString();
+                final String passWord = userPw.getText().toString();
 
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try{
                             JSONObject jsonResponse = new JSONObject(response);
-                            boolean success = jsonResponse.getBoolean("success");
-                            if(success){
-                                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                                dialog = builder.setMessage("로그인에 성공했습니다.")
-                                        .setPositiveButton("확인",null)
-                                        .create();
-                                dialog.show();
-                                Intent intent = new Intent(MainActivity.this,WebViewActivity.class); // 메인 -> 웹뷰
+                            String success = null;
+                            success = jsonResponse.getString("key");
+                            if(success != null){
+//                                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+//                                dialog = builder.setMessage("로그인에 성공했습니다.")
+//                                        .setPositiveButton("확인",null)
+//                                        .create();
+//                                dialog.show();
+                                Toast.makeText(MainActivity.this, "로그인에 성공했습니다.", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(MainActivity.this,HideActivity.class);
+                                intent.putExtra("key",success);
+                                intent.putExtra("username",userName);
                                 MainActivity.this.startActivity(intent);
                                 finish();
                             }
@@ -69,16 +74,6 @@ public class MainActivity extends AppCompatActivity {
                 queue.add(loginRequest);
             }
         });
-//
-//        loginButton.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View view){
-//                userName = userId.getText().toString();
-//                passWord = userPw.getText().toString();
-//                Intent loginIntent = new Intent(MainActivity.this,WebViewActivity.class);
-//                MainActivity.this.startActivity(loginIntent);
-//            }
-//        });
 
         registerButton.setOnClickListener(new View.OnClickListener(){
             @Override

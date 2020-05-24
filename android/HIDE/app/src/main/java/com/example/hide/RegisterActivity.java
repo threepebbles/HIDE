@@ -62,61 +62,6 @@ public class RegisterActivity extends AppCompatActivity {
         form_pw = false;
         form_email = false;
 
-//        final Button validateButton = (Button)findViewById(R.id.validateButton);
-//
-//        validateButton.setOnClickListener(new View.OnClickListener(){
-//
-//            @Override
-//            public void onClick(View view){
-//                String userID = userNameText.getText().toString();
-//                if(validate){
-//                    return;
-//                }
-//                if(userID.equals("")){
-//                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-//                    dialog = builder.setMessage("아이디는 빈 칸일 수 없습니다.")
-//                            .setPositiveButton("확인",null)
-//                            .create();
-//                    dialog.show();
-//                    return;
-//                }
-//                Response.Listener<String> responseListener = new Response.Listener<String>(){
-//
-//                    @Override
-//                    public void onResponse(String response){
-//                        try{
-//                            JSONObject jsonResponse = new JSONObject(response);
-//                            boolean success = jsonResponse.getBoolean("success");
-//                            if(success){
-//                                AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-//                                dialog = builder.setMessage("사용할 수 있는 아이디입니다..")
-//                                        .setPositiveButton("확인",null)
-//                                        .create();
-//                                dialog.show();
-//                                userNameText.setEnabled(false);
-//                                validate = true;
-//                                userNameText.setBackgroundColor(getResources().getColor(R.color.colorGray));
-//                                validateButton.setBackgroundColor(getResources().getColor(R.color.colorGray));
-//                            }
-//                            else{
-//                                AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-//                                dialog = builder.setMessage("사용할 수 없는 아이디입니다.")
-//                                        .setNegativeButton("확인",null)
-//                                        .create();
-//                                dialog.show();
-//                            }
-//                        }
-//                        catch(Exception e){
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                };
-//                ValidateRequest validateRequest = new ValidateRequest(userID,responseListener);
-//                RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
-//                queue.add(validateRequest);
-//            }
-//        });
-
         userNameText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -241,13 +186,14 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onResponse(String response){
                         try{
                             JSONObject jsonResponse = new JSONObject(response);
-                            boolean success = jsonResponse.getBoolean("success");
-                            if(success){
-                                AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                                dialog = builder.setMessage("회원가입에 성공했습니다.")
-                                        .setPositiveButton("확인",null)
-                                        .create();
-                                dialog.show();
+                            String success = jsonResponse.getString("key");
+                            if(success != null){
+//                                AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+//                                dialog = builder.setMessage("회원가입에 성공했습니다.")
+//                                        .setPositiveButton("확인",null)
+//                                        .create();
+//                                dialog.show();
+                                Toast.makeText(RegisterActivity.this, "회원가입 성공!", Toast.LENGTH_SHORT).show();
                                 finish();
                             }
                             else{

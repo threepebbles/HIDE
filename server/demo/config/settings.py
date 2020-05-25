@@ -49,7 +49,8 @@ INSTALLED_APPS = (
     'django.contrib.sites',
 )
 
-ASGI_APPLICATION = 'config.routing.application'
+WSGI_APPLICATION = 'config.wsgi.application'
+ASGI_APPLICATION = 'config.asgi.application'
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
@@ -74,8 +75,6 @@ MIDDLEWARE = (
 MIDDLEWARE_CLASSES = MIDDLEWARE
 
 ROOT_URLCONF = 'config.urls'
-
-WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases

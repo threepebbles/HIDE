@@ -6,3 +6,9 @@ class MyfileSeirializer(serializers.HyperlinkedModelSerializer):
         model = Myfilefields = (
             'index', 'file_path', 'state', 'author'
         )
+
+class NetworkStateSeirializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Myfilefields = (
+            'network_state', 'author'
+        )

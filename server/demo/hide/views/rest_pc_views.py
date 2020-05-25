@@ -6,12 +6,13 @@ from django.utils import timezone
 from django.db import models
 from ..forms import MyfileForm
 from ..models import Myfile
+from django.contrib.auth import authenticate
+from rest_framework.authtoken.models import Token
 
 from django.http import HttpResponse, JsonResponse
 
-
 @login_required(login_url='rest-auth:rest_register')
-def myfile_rest_create(request):
+def rest_myfile_create(request):
     if request.method == 'POST':
         form = MyfileForm(request.POST)
         if form.is_valid():
@@ -25,21 +26,23 @@ def myfile_rest_create(request):
             # create success
             else:
                 myfile.save()
-                return JsonResponse({'message': 'create success'}, json_dumps_params = {'ensure_ascii': True})
-
-            # return redirect('hide:index')
+                return JsonResponse({'result':'success', 'message': 'create success'},
+                                    json_dumps_params = {'ensure_ascii': True})
+        else:
+            return JsonResponse({'result':'fail', 'message': 'form is not valed'},
+                                json_dumps_params={'ensure_ascii': True})
     else:
-        return JsonResponse({'message': 'use POST'}, json_dumps_params = {'ensure_ascii': True})
+        return JsonResponse({'result': 'fail', 'message': 'use POST'},
+                            json_dumps_params = {'ensure_ascii': True})
 
 
 @login_required(login_url='rest-auth:rest_register')
-def myfile_rest_delete(request):
-    """
-    hide 질문삭제
-    """
+def rest_myfile_delete(request):
     if request.method == 'POST':
         Myfile.objects.filter(author_id=request.user.id).delete()
-        return JsonResponse({'message': 'delete success'}, json_dumps_params = {'ensure_ascii': True})
+        return JsonResponse({'result': 'success', 'message': 'delete success'},
+                                json_dumps_params={'ensure_ascii': True})
     else:
-        return JsonResponse({'message': 'use POST'}, json_dumps_params={'ensure_ascii': True})
+        return JsonResponse({'result':'fail', 'message': 'use POST'},
+                            json_dumps_params={'ensure_ascii': True})
 

@@ -10,9 +10,6 @@ from ..models import Myfile
 
 @login_required(login_url='common:login')
 def myfile_create(request):
-    """
-    hide 질문등록
-    """
     if request.method == 'POST':
         form = MyfileForm(request.POST)
         if form.is_valid():
@@ -36,12 +33,8 @@ def myfile_create(request):
 
 
 @login_required(login_url='common:login')
-def myfile_modify(request, current_author_id, myfile_index):
-    """
-    hide 질문수정
-    """
-    # myfile = Myfile.objects.filter(author_id=current_author_id, index=myfile_index)
-    myfile = get_object_or_404(Myfile, index=myfile_index)
+def myfile_modify(request, current_author_id, myfile_id):
+    myfile = get_object_or_404(Myfile, id=myfile_id)
 
     if request.user != myfile.author:
         messages.error(request, '수정권한이 없습니다')

@@ -1,9 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
-from django.forms.models import *
 
-# 'index', 'file_path', 'state'
 class Myfile(models.Model):
     class Meta:
         unique_together = (('author', 'file_path'))
@@ -11,6 +8,7 @@ class Myfile(models.Model):
     file_path = models.CharField(db_column="FILE_PATH", max_length=200)
     state = models.BooleanField(db_column="STATE")
     author = models.ForeignKey(User, on_delete=models.CASCADE)
+
 
 class NetworkState(models.Model):
     network_state = models.BooleanField(db_column="NETWORK_STATE", default="False")

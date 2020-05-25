@@ -1,20 +1,11 @@
 from django.urls import path
-from django.conf import settings
-from django.conf.urls.static import static
-from django.conf.urls import url, include
-from django.views.generic import TemplateView
-from rest_framework import routers
 
 from .views import base_views, myfile_views
 from .views import rest_pc_views, rest_mobile_views, rest_network_state_views
 
 app_name = 'hide'
 
-# router = routers.DefaultRouter()
-# router.register(r'hide_list', views.Myfile_restful_main)
-
 urlpatterns = [
-    # URL 별칭
     path('', base_views.index, name='index'),
     path('myfile', base_views.myfile_list, name='myfile_list'),
 

@@ -1,15 +1,10 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404, redirect
-from django.utils import timezone
 
-from django.db import models
 from ..forms import MyfileForm
 from ..models import Myfile
-from django.contrib.auth import authenticate
-from rest_framework.authtoken.models import Token
 
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 
 @login_required(login_url='rest-auth:rest_register')
 def rest_myfile_create(request):

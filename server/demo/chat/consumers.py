@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404
 import json
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
-
+from hide.views.myfile_views import network_state_check, network_state_modify
 
 from django.contrib.auth.decorators import login_required
 from channels.auth import login
@@ -45,9 +45,8 @@ class ChatConsumer(WebsocketConsumer):
         print("[server]: user id="+str(self.user.id) + " sent message")
         text_data_json = json.loads(text_data)
 
-        my_network_state = get_object_or_404(NetworkState, author_id=self.user.id)
-        my_network_state.network_state = True
-        my_network_state.save()
+        my_network_state = network_state_check(self.user)
+        network_state_modify(self.user, "True")
         message = text_data_json["message"]
 
         # Send message to room group

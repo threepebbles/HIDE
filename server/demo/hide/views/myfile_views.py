@@ -64,17 +64,18 @@ def myfile_delete(request, current_author_id):
     return redirect('hide:myfile_list')
 
 
-def network_state_check(request):
-    my_network_state = NetworkState.objects.filter(author=request.user)
+def network_state_check(current_user):
+    my_network_state = NetworkState.objects.filter(author=current_user)
     if len(my_network_state)==0:
-        form = NetworkStateForm()
-        ns = form.save(commit=False)
-        ns.author = request.user
-        ns.network_state = "False"
-
-        ns.save()
+        network_state_modify(current_user, "False")
         print("network state created")
-        print(ns)
     else:
-        print(my_network_state)
-    return list(NetworkState.objects.filter(author=request.user))[0].network_state
+        print("network state already exists")
+    return list(NetworkState.objects.filter(author=current_user))[0].network_state
+
+def network_state_modify(current_user, state):
+    form = NetworkStateForm()
+    ns = form.save(commit=False)
+    ns.author = current_user
+    ns.network_state = state
+    ns.save()

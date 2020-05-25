@@ -107,4 +107,3 @@ venvs
 db.sqlite3
 __pycache__/
 hide.cmd
-migrations

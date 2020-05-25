@@ -25,7 +25,7 @@ urlpatterns = [
 
     # rest_pc_views.py
     path('myfile/rest/create/', rest_pc_views.rest_myfile_create, name='rest_myfile_create'),
-    path('myfile/rest/delete/', rest_pc_views.rest_myfile_delete, name='rest_myfile__delete'),
+    path('myfile/rest/delete/', rest_pc_views.rest_myfile_delete, name='rest_myfile_delete'),
 
     # rest_mobile_views.py
     path('myfile/rest/get_list/', rest_mobile_views.rest_get_myfile_list, name='rest_get_myfile_list'),

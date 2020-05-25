@@ -2,6 +2,17 @@
 
 {% block content %}
 <div class="container my-3">
+    <div>
+        Network state:
+        {% if network_state_list %}
+            {% for ns in network_state_list %}
+            {% if request.user.id == ns.author_id %}
+                {{ ns.network_state}}
+            {% endif %}
+            {% endfor %}
+        {% endif %}
+    </div>
+
     <table class="table">
         <thead>
         <tr class="text-center thead-dark">

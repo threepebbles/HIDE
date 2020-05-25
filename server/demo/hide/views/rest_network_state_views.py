@@ -1,24 +1,7 @@
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 
-from ..models import NetworkState
-from ..forms import NetworkStateForm
-from django.http import HttpResponse, JsonResponse
-
-def network_state_check(request):
-    my_network_state = NetworkState.objects.filter(author=request.user)
-    if len(my_network_state)==0:
-        form = NetworkStateForm()
-        ns = form.save(commit=False)
-        ns.author = request.user
-        ns.network_state = "False"
-
-        ns.save()
-        print("network state created")
-        print(ns)
-    else:
-        print(my_network_state)
-    return list(NetworkState.objects.filter(author=request.user))[0].network_state
-
+from .myfile_views import network_state_check
 
 @login_required(login_url='rest-auth:rest_register')
 def rest_get_network_state(request):

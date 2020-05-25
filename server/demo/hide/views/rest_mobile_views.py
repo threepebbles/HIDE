@@ -7,22 +7,7 @@ from django.db import models
 from ..forms import NetworkStateForm, MyfileForm
 from ..models import Myfile
 
-from django.http import HttpResponse, JsonResponse
-import json
-
-# @login_required(login_url='rest-auth:rest_register')
-# def rest_network_state_check(request):
-#     networkstate = get_object_or_404(NetworkState, author=request.user)
-#
-#     if request.user != networkstate.author:
-#         return JsonResponse({'result':'fail', 'message': '수정권한이 없습니다'}, json_dumps_params = {'ensure_ascii': True})
-#
-#     if request.method == "POST":
-#         return JsonResponse({'result': 'success', 'network_state': networkstate.network_state},
-#                             json_dumps_params={'ensure_ascii': True})
-#     else:
-#         return JsonResponse({'result': 'fail', 'message': 'use POST'}, json_dumps_params={'ensure_ascii': True})
-
+from django.http import JsonResponse
 
 @login_required(login_url='rest-auth:rest_register')
 def rest_get_myfile_list(request):

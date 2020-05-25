@@ -4,8 +4,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 
 from django.db import models
-from ..forms import MyfileForm
-from ..models import Myfile
+from ..forms import MyfileForm, NetworkStateForm
+from ..models import Myfile, NetworkState
 
 
 @login_required(login_url='common:login')
@@ -62,9 +62,21 @@ def myfile_modify(request, current_author_id, myfile_id):
 
 @login_required(login_url='common:login')
 def myfile_delete(request, current_author_id):
-    """
-    hide 질문삭제
-    """
-
     Myfile.objects.filter(author_id=current_author_id).delete()
     return redirect('hide:myfile_list')
+
+
+def network_state_check(request):
+    my_network_state = NetworkState.objects.filter(author=request.user)
+    if len(my_network_state)==0:
+        form = NetworkStateForm()
+        ns = form.save(commit=False)
+        ns.author = request.user
+        ns.network_state = "False"
+
+        ns.save()
+        print("network state created")
+        print(ns)
+    else:
+        print(my_network_state)
+    return list(NetworkState.objects.filter(author=request.user))[0].network_state

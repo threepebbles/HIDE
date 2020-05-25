@@ -4,7 +4,7 @@ from ..models import Myfile
 
 from django.http import JsonResponse
 
-@login_required(login_url='rest-auth:rest_register')
+@login_required(login_url='rest-auth:rest_login')
 def rest_get_myfile_list(request):
     myfiles = list(Myfile.objects.filter(author_id=request.user.id).values())
     # print(type(myfiles))

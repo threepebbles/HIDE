@@ -5,20 +5,31 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.HashMap;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
     private AlertDialog dialog;
+    private ServerRequestApi serverRequestApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +41,12 @@ public class MainActivity extends AppCompatActivity {
         final EditText userId = (EditText) findViewById(R.id.user_id);
         final EditText userPw = (EditText) findViewById(R.id.user_pw);
 
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://34.64.186.183:8000/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        serverRequestApi = retrofit.create(ServerRequestApi.class);
+
         loginButton.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -37,41 +54,42 @@ public class MainActivity extends AppCompatActivity {
                 final String userName = userId.getText().toString();
                 final String passWord = userPw.getText().toString();
 
-                Response.Listener<String> responseListener = new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try{
-                            JSONObject jsonResponse = new JSONObject(response);
-                            String success = null;
-                            success = jsonResponse.getString("key");
-                            if(success != null){
+                Login(userName,passWord);
+//                Response.Listener<String> responseListener = new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        try{
+//                            JSONObject jsonResponse = new JSONObject(response);
+//                            String success = null;
+//                            success = jsonResponse.getString("key");
+//                            if(success != null){
+////                                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+////                                dialog = builder.setMessage("로그인에 성공했습니다.")
+////                                        .setPositiveButton("확인",null)
+////                                        .create();
+////                                dialog.show();
+//                                Toast.makeText(MainActivity.this, "로그인에 성공했습니다.", Toast.LENGTH_SHORT).show();
+//                                Intent intent = new Intent(MainActivity.this,HideActivity.class);
+//                                intent.putExtra("key",success);
+//                                intent.putExtra("username",userName);
+//                                MainActivity.this.startActivity(intent);
+//                                finish();
+//                            }
+//                            else{
 //                                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-//                                dialog = builder.setMessage("로그인에 성공했습니다.")
-//                                        .setPositiveButton("확인",null)
+//                                dialog = builder.setMessage("계정을 다시 확인하세요.")
+//                                        .setNegativeButton("다시 시도",null)
 //                                        .create();
 //                                dialog.show();
-                                Toast.makeText(MainActivity.this, "로그인에 성공했습니다.", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(MainActivity.this,HideActivity.class);
-                                intent.putExtra("key",success);
-                                intent.putExtra("username",userName);
-                                MainActivity.this.startActivity(intent);
-                                finish();
-                            }
-                            else{
-                                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                                dialog = builder.setMessage("계정을 다시 확인하세요.")
-                                        .setNegativeButton("다시 시도",null)
-                                        .create();
-                                dialog.show();
-                            }
-                        }catch(Exception e){
-                            e.printStackTrace();
-                        }
-                    }
-                };
-                LoginRequest loginRequest = new LoginRequest(userName,passWord,responseListener);
-                RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
-                queue.add(loginRequest);
+//                            }
+//                        }catch(Exception e){
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                };
+//                LoginRequest loginRequest = new LoginRequest(userName,passWord,responseListener);
+//                RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+//                queue.add(loginRequest);
             }
         });
 
@@ -80,6 +98,60 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view){
                 Intent registerIntent = new Intent(MainActivity.this,RegisterActivity.class);
                 MainActivity.this.startActivity(registerIntent);
+            }
+        });
+    }
+
+    public void Login(final String username,final String password){
+        HashMap<String, String> data = new HashMap<>();
+        data.put("username",username);
+        data.put("password",password);
+        Call<Key> call = serverRequestApi.Login(data);
+        call.enqueue(new Callback<Key>() {
+            @Override
+            public void onResponse(Call<Key> call, Response<Key> response) {
+                if(!response.isSuccessful()) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    if (response.code() == 400) {
+                        dialog = builder.setMessage("계정 정보가 올바르지 않습니다.")
+                                    .setNegativeButton("확인", null)
+                                    .create();
+                            dialog.show();
+                        return;
+                    }
+                    if(response.code()==500){
+                        dialog = builder.setMessage("서버 내부 오류가 발생했습니다.\n관리자에게 문의하세요")
+                                .setNegativeButton("확인", null)
+                                .create();
+                        dialog.show();
+                        return;
+                    }
+                    dialog = builder.setMessage("Error Code : "+Integer.toString(response.code()))
+                            .setNegativeButton("확인", null)
+                            .create();
+                    dialog.show();
+                    return;
+                }
+                Key keyResponse = response.body();
+                String value = keyResponse.getKey();
+                if(!value.equals("")){
+                    Toast.makeText(MainActivity.this, "로그인 성공!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(MainActivity.this,HideActivity.class);
+                                intent.putExtra("key",value);
+                                intent.putExtra("username",username);
+                                MainActivity.this.startActivity(intent);
+                    finish();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Key> call, Throwable t) {
+                //연결 실패
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                dialog = builder.setMessage("서버 연결 실패")
+                        .setNegativeButton("확인",null)
+                        .create();
+                dialog.show();
             }
         });
     }

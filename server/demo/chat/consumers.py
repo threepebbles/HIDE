@@ -13,7 +13,7 @@ from hide.models import NetworkState
 class ChatConsumer(WebsocketConsumer):
     def connect(self):
         self.user = self.scope["user"]
-        self.room_name = self.scope['url_route']['kwargs']['room_name']
+        self.room_name = self.user
         self.room_group_name = 'chat_%s' % self.user
 
         if self.user.is_authenticated:

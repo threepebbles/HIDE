@@ -19,7 +19,7 @@ class ChatConsumer(WebsocketConsumer):
         if self.user.is_authenticated:
             network_state_check(self.user)
             network_state_modify(self.user, "True")
-            print("[server]: user id=" + str(self.user.id) + " websocket is connected")
+            print("[server]: user=" + str(self.user) + " websocket is connected")
         else:
             print("[server]: Anonymous user websocket is connected")
         # Join room group
@@ -32,7 +32,7 @@ class ChatConsumer(WebsocketConsumer):
 
     def disconnect(self, close_code):
         if (self.user.is_authenticated == True):
-            print("[server]: user id=" + str(self.user.id) + " websocket is closed")
+            print("[server]: user=" + str(self.user) + " websocket is closed")
             my_network_state = get_object_or_404(NetworkState, author_id=self.user.id)
             my_network_state.network_state = False
             my_network_state.save()
@@ -48,7 +48,7 @@ class ChatConsumer(WebsocketConsumer):
     # Receive message from WebSocket
     def receive(self, text_data):
         if(self.user.is_authenticated):
-            print("[server]: user id="+str(self.user.id) + " sent message")
+            print("[server]: user="+str(self.user) + " sent message")
         else:
             print("[server]: Anonymous user sent message")
 

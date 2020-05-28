@@ -7,7 +7,7 @@ app_name = 'hide'
 
 urlpatterns = [
     path('', base_views.index, name='index'),
-    path('myfile', base_views.myfile_list, name='myfile_list'),
+    path('myfile/', base_views.myfile_list, name='myfile_list'),
 
     # myfile_views.py
     path('myfile/create/', myfile_views.myfile_create, name='myfile_create'),
@@ -20,6 +20,7 @@ urlpatterns = [
 
     # rest_mobile_views.py
     path('myfile/rest/get_list/', rest_mobile_views.rest_get_myfile_list, name='rest_get_myfile_list'),
+    path('myfile/rest/modify/', rest_mobile_views.rest_myfile_modify, name='rest_myfile_modify'),
 
     # rest_network_state_views.py
     path('myfile/rest/get_network_state/', rest_network_state_views.rest_get_network_state, name='rest_get_network_state'),

@@ -3,7 +3,7 @@ from django.http import JsonResponse
 
 from .myfile_views import network_state_check
 
-@login_required(login_url='rest-auth:rest_login')
+@login_required(login_url='rest_login')
 def rest_get_network_state(request):
     my_network_state = network_state_check(request.user)
     print('my_network_state: ' + str(my_network_state))

@@ -6,8 +6,11 @@ from django.contrib import admin
 from django.urls import include, path
 
 from hide.views import base_views
+from rest_framework.authtoken import views
 
 urlpatterns = [
+    path('api-token-auth/', views.obtain_auth_token),
+
     path('admin/', admin.site.urls),
     path('common/', include('common.urls')),
     path('hide/', include('hide.urls')),

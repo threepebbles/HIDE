@@ -6,7 +6,7 @@ from ..models import Myfile
 
 from django.http import JsonResponse
 
-@login_required(login_url='rest-auth:rest_login')
+@login_required(login_url='rest_login')
 def rest_myfile_create(request):
     if request.method == 'POST':
         form = MyfileForm(request.POST)
@@ -31,7 +31,7 @@ def rest_myfile_create(request):
                             json_dumps_params = {'ensure_ascii': True})
 
 
-@login_required(login_url='rest-auth:rest_login')
+@login_required(login_url='rest_login')
 def rest_myfile_delete(request):
     if request.method == 'POST':
         Myfile.objects.filter(author_id=request.user.id).delete()

@@ -73,6 +73,7 @@ def network_state_check(current_user):
         print("network state already exists")
     return list(NetworkState.objects.filter(author=current_user))[0].network_state
 
+
 def network_state_modify(current_user, state):
     form = NetworkStateForm()
     ns = form.save(commit=False)

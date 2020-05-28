@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from rest_framework.permissions import IsAuthenticated
 
 def index(request):
     return render(request, 'chat/index.html', {})

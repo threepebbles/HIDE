@@ -1,5 +1,3 @@
-# import json
-# from channels.generic.websocket import AsyncWebsocketConsumer
 from django.shortcuts import get_object_or_404
 
 import json
@@ -11,15 +9,19 @@ from django.contrib.auth.decorators import login_required
 from channels.auth import login
 
 from hide.models import NetworkState
-from hide.forms import NetworkStateForm
-from django.contrib.auth.models import User
 
 class ChatConsumer(WebsocketConsumer):
     def connect(self):
-        self.room_name = self.scope['url_route']['kwargs']['room_name']
-        self.room_group_name = 'chat_%s' % self.room_name
         self.user = self.scope["user"]
+        self.room_name = self.scope['url_route']['kwargs']['room_name']
+        self.room_group_name = 'chat_%s' % self.user
 
+        if self.user.is_authenticated:
+            network_state_check(self.user)
+            network_state_modify(self.user, "True")
+            print("[server]: user id=" + str(self.user.id) + " websocket is connected")
+        else:
+            print("[server]: Anonymous user websocket is connected")
         # Join room group
         async_to_sync(self.channel_layer.group_add)(
             self.room_group_name,
@@ -29,10 +31,13 @@ class ChatConsumer(WebsocketConsumer):
         self.accept()
 
     def disconnect(self, close_code):
-        my_network_state = get_object_or_404(NetworkState, author_id=self.user.id)
-        my_network_state.network_state = False
-        my_network_state.save()
-        print("[server]: client socket is closed")
+        if (self.user.is_authenticated == True):
+            print("[server]: user id=" + str(self.user.id) + " websocket is closed")
+            my_network_state = get_object_or_404(NetworkState, author_id=self.user.id)
+            my_network_state.network_state = False
+            my_network_state.save()
+        else:
+            print("[server]: Anonymous user websocket is closed")
 
         # Leave room group
         async_to_sync(self.channel_layer.group_discard)(
@@ -42,28 +47,33 @@ class ChatConsumer(WebsocketConsumer):
 
     # Receive message from WebSocket
     def receive(self, text_data):
-        print("[server]: user id="+str(self.user.id) + " sent message")
-        text_data_json = json.loads(text_data)
+        if(self.user.is_authenticated):
+            print("[server]: user id="+str(self.user.id) + " sent message")
+        else:
+            print("[server]: Anonymous user sent message")
 
-        my_network_state = network_state_check(self.user)
-        network_state_modify(self.user, "True")
-        message = text_data_json["message"]
+        text_data_json = json.loads(text_data)
+        file_path = text_data_json["file_path"]
+        file_state = text_data_json["file_state"]
 
         # Send message to room group
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name,
             {
                 'type': 'chat_message',
-                'message': message
+                'file_path': file_path,
+                'file_state': file_state
             }
         )
 
 
     # Receive message from room group
     def chat_message(self, event):
-        message = event['message']
+        file_path = event['file_path']
+        file_state = event['file_state']
 
         # Send message to WebSocket
         self.send(text_data=json.dumps({
-            'message': message
+            'file_path': file_path,
+            'file_state': file_state
         }))

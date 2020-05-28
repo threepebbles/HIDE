@@ -1,34 +1,26 @@
 package com.example.hide;
 
 import android.content.Intent;
-import android.os.AsyncTask;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.AlertDialog;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -38,25 +30,30 @@ public class HideActivity extends AppCompatActivity {
     private PathListAdapter adapter;
     private List<PathList> pathList;
     private ServerRequestApi serverRequestApi;
+    private AlertDialog dialog;
+    private ImageView connect;
+    private TextView connectCheck;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hide);
 
-        pathListView = (ListView) findViewById(R.id.pathListView); // 이부분 fragment로 옮겨야함 ListView위치가 기본위치임
+        pathListView = (ListView) findViewById(R.id.pathListView);
         pathList = new ArrayList<PathList>();
         adapter = new PathListAdapter(getApplicationContext(),pathList);
         pathListView.setAdapter(adapter);
 
-
-        final Button InfoButton = (Button) findViewById(R.id.UserInfoButton);
-        final Button ListButton = (Button) findViewById(R.id.ListButton);
         final Button LogoutButton = (Button) findViewById(R.id.LogoutButton);
+        Button RefreshButton = (Button) findViewById(R.id.RefreshButton);
         final LinearLayout notice = (LinearLayout) findViewById(R.id.notice);
         final Intent intent = getIntent();
         String username = intent.getExtras().getString("username"); // 사용자정보 출력
-        InfoButton.setText(username);
+        // set username 추가하기
+        TextView user = (TextView) findViewById(R.id.UserName);
+        user.setText("사용자 계정 : "+username);
+
+        final String sid = intent.getExtras().getString("session");
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://34.64.186.183:8000/")
@@ -64,30 +61,10 @@ public class HideActivity extends AppCompatActivity {
                 .build();
         serverRequestApi = retrofit.create(ServerRequestApi.class);
 
-        InfoButton.setOnClickListener(new View.OnClickListener() {
-
+        RefreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                notice.setVisibility(View.GONE);
-                InfoButton.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                ListButton.setBackgroundColor(getResources().getColor(R.color.colorGray));
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment,new InfoFragment());
-                fragmentTransaction.commit();
-            }
-        });
-
-        ListButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                notice.setVisibility(View.GONE);
-                InfoButton.setBackgroundColor(getResources().getColor(R.color.colorGray));
-                ListButton.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment,new ListFragment());
-                fragmentTransaction.commit();
+                ListCheck(sid);
             }
         });
 
@@ -96,93 +73,171 @@ public class HideActivity extends AppCompatActivity {
             @Override
             public void onClick(View view){
                 String token = intent.getExtras().getString("key");
-
-                Response.Listener<String> responseListener = new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try{
-                            JSONObject jsonResponse = new JSONObject(response);
-                            String success = jsonResponse.getString("detail");
-                            if(success != null){
-                                Toast.makeText(HideActivity.this, "로그아웃에 성공했습니다.", Toast.LENGTH_SHORT).show();
-                                Intent intents = new Intent(HideActivity.this,MainActivity.class);
-                                HideActivity.this.startActivity(intents);
-                                finish();
-                            }
-                            else{
-                                Toast.makeText(HideActivity.this, "로그아웃에 실패했습니다.", Toast.LENGTH_SHORT).show();
-                            }
-                        }catch(Exception e){
-                            e.printStackTrace();
-                        }
-                    }
-                };
-                LogoutRequest logoutRequest = new LogoutRequest(token,responseListener);
-                RequestQueue queue = Volley.newRequestQueue(HideActivity.this);
-                queue.add(logoutRequest);
+                Logout(token);
             }
         });
 
-        new BackgroundTask().execute();
+        CheckNetwork(sid);
+        ListCheck(sid);
     }
-// url connection test
-    class BackgroundTask extends AsyncTask<Void,Void,String> {
-        String target;
-        Intent intent = getIntent();
-        @Override
-        protected void onPreExecute(){
-            target = "http://34.64.186.183:8000/hide/myfile/rest/get_list";
-        }
 
-        @Override
-        protected String doInBackground(Void... voids){
-            try{
-                String key = intent.getExtras().getString("key");
-                URL url = new URL(target);
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                httpURLConnection.setRequestMethod("POST");
-                httpURLConnection.setRequestProperty("Authorization","Token "+key);
-                InputStream inputStream = httpURLConnection.getInputStream();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                String temp;
-                StringBuilder stringBuilder = new StringBuilder();
-                while((temp = bufferedReader.readLine()) != null){
-                    stringBuilder.append(temp+"\n");
+    private void Logout(String value){
+        HashMap<String,String> data = new HashMap<>();
+        data.put("token",value);
+        Call<Key> call = serverRequestApi.Logout(data);
+        call.enqueue(new Callback<Key>() {
+            @Override
+            public void onResponse(Call<Key> call, retrofit2.Response<Key> response) {
+                if(!response.isSuccessful()) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(HideActivity.this);
+                    if (response.code() == 400) {
+                        dialog = builder.setMessage("로그아웃에 실패했습니다.")
+                                .setNegativeButton("확인", null)
+                                .create();
+                        dialog.show();
+                        return;
+                    }
+                    if(response.code()==500){
+                        dialog = builder.setMessage("서버 내부 오류가 발생했습니다.\n관리자에게 문의하세요")
+                                .setNegativeButton("확인", null)
+                                .create();
+                        dialog.show();
+                        return;
+                    }
+                    dialog = builder.setMessage("Error Code : "+Integer.toString(response.code()))
+                            .setNegativeButton("확인", null)
+                            .create();
+                    dialog.show();
+                    return;
                 }
-                bufferedReader.close();
-                inputStream.close();
-                httpURLConnection.disconnect();
-                return stringBuilder.toString().trim();
-            }catch(Exception e){
-                e.printStackTrace();
+                Key keyResponse = response.body();
+                String value = keyResponse.getDetail();
+                if(!value.equals("")) {
+                    Toast.makeText(HideActivity.this, "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
+                    Intent intents = new Intent(HideActivity.this,MainActivity.class);
+                    HideActivity.this.startActivity(intents);
+                    finish();
+                }
             }
-            return null;
-        }
 
-        @Override
-        public void onProgressUpdate(Void...values){
-            super.onProgressUpdate();
-        }
+            @Override
+            public void onFailure(Call<Key> call, Throwable t) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(HideActivity.this);
+                dialog = builder.setMessage("서버 연결 실패")
+                        .setNegativeButton("확인",null)
+                        .create();
+                dialog.show();
+            }
+        });
+    }
 
-        @Override
-        public void onPostExecute(String result){
-            try {
-                JSONObject jsonObject = new JSONObject(result);
-                JSONArray jsonArray = jsonObject.getJSONArray("response");
-                int count = 0;
-                String path;
+    private void CheckNetwork(String token){
+        HashMap<String,String> data = new HashMap<>();
+        data.put("Cookie",token);
+        Call<State> call = serverRequestApi.NetworkCheck(data);
+        call.enqueue(new Callback<State>() {
+            @Override
+            public void onResponse(Call<State> call, Response<State> response) {
+                if(!response.isSuccessful()) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(HideActivity.this);
+                    if(response.code()==500){
+                        dialog = builder.setMessage("서버 내부 오류가 발생했습니다.\n관리자에게 문의하세요")
+                                .setNegativeButton("확인", null)
+                                .create();
+                        dialog.show();
+                        return;
+                    }
+                    dialog = builder.setMessage("Error Code : "+Integer.toString(response.code()))
+                            .setNegativeButton("확인", null)
+                            .create();
+                    dialog.show();
+                    return;
+                }
+                State stateResponse = response.body();
+                String value = stateResponse.getResult();
+                boolean networkState = stateResponse.isNetwork_state();
+                connect = (ImageView) findViewById(R.id.connect);
+                connectCheck = (TextView) findViewById(R.id.networkState);
+                if(!value.equals("")) {
+                    if(networkState){
+                        connect.setImageResource(R.drawable.ic_cast_connected_green_55dp);
+                        connectCheck.setText("PC Network Connected");
+                        connectCheck.setTextColor(Color.GREEN);
+                    }else{
+                        connect.setImageResource(R.drawable.ic_cast_connected_red_55dp);
+                        connectCheck.setText("PC Network Disconnected");
+                        connectCheck.setTextColor(Color.RED);
+                    }
+                    Toast.makeText(HideActivity.this, ""+networkState, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<State> call, Throwable t) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(HideActivity.this);
+                dialog = builder.setMessage("서버 연결 실패")
+                        .setNegativeButton("확인",null)
+                        .create();
+                dialog.show();
+            }
+        });
+    }
+
+    public void ListCheck(String token){
+        HashMap<String,String> data = new HashMap<>();
+        data.put("Cookie",token);
+        Call<MyFile> call = serverRequestApi.ListCheck(data);
+        call.enqueue(new Callback<MyFile>() {
+            @Override
+            public void onResponse(Call<MyFile> call, Response<MyFile> response) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(HideActivity.this);
+                if(!response.isSuccessful()) {
+                    if(response.code()==500){
+                        dialog = builder.setMessage("서버 내부 오류가 발생했습니다.\n관리자에게 문의하세요")
+                                .setNegativeButton("확인", null)
+                                .create();
+                        dialog.show();
+                        return;
+                    }
+                    dialog = builder.setMessage("Error Code : "+Integer.toString(response.code()))
+                            .setNegativeButton("확인", null)
+                            .create();
+                    dialog.show();
+                    return;
+                }
+                MyFile myFileResponse = response.body();
+                String result = myFileResponse.getResult();
+                List<ItemList> itemList = myFileResponse.getItemList();
+                String path ;
                 boolean state;
-                while(count<jsonArray.length()){
-                    JSONObject object = jsonArray.getJSONObject(count);
-                    path = object.getString("file_path");
-                    state = object.getBoolean("state");
+                pathList.clear();
+                for(ItemList item : itemList){
+                    path = item.getFile_path();
+                    state = item.isState();
                     PathList filePath = new PathList(path,state);
                     pathList.add(filePath);
-                    count++;
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+                adapter.notifyDataSetChanged();
             }
+
+            @Override
+            public void onFailure(Call<MyFile> call, Throwable t) {
+
+            }
+        });
+    }
+
+
+
+    private long lastTimeBackPressed;
+
+    @Override
+    public void onBackPressed(){
+        if(System.currentTimeMillis() - lastTimeBackPressed < 1500){
+            finish();
+            return;
         }
+        Toast.makeText(this,"뒤로 버튼을 한 번 더 눌러 종료합니다.",Toast.LENGTH_SHORT).show();
+        lastTimeBackPressed = System.currentTimeMillis();
     }
 }

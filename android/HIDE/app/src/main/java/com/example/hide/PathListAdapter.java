@@ -53,7 +53,7 @@ public class PathListAdapter extends BaseAdapter {
                     Toast.makeText(context, "은닉 활성화!", Toast.LENGTH_SHORT).show();
                 }else{
                     // 마찬가지
-                    Toast.makeText(context, "은닉 비활성화!" + isChecked, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "은닉 비활성화!", Toast.LENGTH_SHORT).show();
                 }
             }
         });

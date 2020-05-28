@@ -134,11 +134,13 @@ public class MainActivity extends AppCompatActivity {
                 }
                 Key keyResponse = response.body();
                 String value = keyResponse.getKey();
+                String sid = response.headers().get("Set-Cookie");
                 if(!value.equals("")){
                     Toast.makeText(MainActivity.this, "로그인 성공!", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(MainActivity.this,HideActivity.class);
                                 intent.putExtra("key",value);
                                 intent.putExtra("username",username);
+                                intent.putExtra("session",sid);
                                 MainActivity.this.startActivity(intent);
                     finish();
                 }

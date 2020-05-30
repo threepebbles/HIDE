@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -41,19 +42,20 @@ public class HideActivity extends AppCompatActivity {
 
         pathListView = (ListView) findViewById(R.id.pathListView);
         pathList = new ArrayList<PathList>();
-        adapter = new PathListAdapter(getApplicationContext(),pathList);
-        pathListView.setAdapter(adapter);
 
         final Button LogoutButton = (Button) findViewById(R.id.LogoutButton);
         Button RefreshButton = (Button) findViewById(R.id.RefreshButton);
         final LinearLayout notice = (LinearLayout) findViewById(R.id.notice);
         final Intent intent = getIntent();
         String username = intent.getExtras().getString("username"); // 사용자정보 출력
-        // set username 추가하기
+
         TextView user = (TextView) findViewById(R.id.UserName);
         user.setText("사용자 계정 : "+username);
 
         final String sid = intent.getExtras().getString("session");
+
+        adapter = new PathListAdapter(getApplicationContext(),pathList,sid);
+        pathListView.setAdapter(adapter);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://34.64.186.183:8000/")
@@ -64,6 +66,7 @@ public class HideActivity extends AppCompatActivity {
         RefreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                CheckNetwork(sid);
                 ListCheck(sid);
             }
         });
@@ -183,7 +186,7 @@ public class HideActivity extends AppCompatActivity {
         });
     }
 
-    public void ListCheck(String token){
+    private void ListCheck(String token){
         HashMap<String,String> data = new HashMap<>();
         data.put("Cookie",token);
         Call<MyFile> call = serverRequestApi.ListCheck(data);
@@ -222,7 +225,11 @@ public class HideActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<MyFile> call, Throwable t) {
-
+                AlertDialog.Builder builder = new AlertDialog.Builder(HideActivity.this);
+                dialog = builder.setMessage("서버 연결 실패")
+                        .setNegativeButton("확인",null)
+                        .create();
+                dialog.show();
             }
         });
     }
@@ -233,7 +240,7 @@ public class HideActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed(){
-        if(System.currentTimeMillis() - lastTimeBackPressed < 1500){
+        if(System.currentTimeMillis() - lastTimeBackPressed < 3000){
             finish();
             return;
         }

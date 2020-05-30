@@ -10,16 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.util.HashMap;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -55,41 +46,7 @@ public class MainActivity extends AppCompatActivity {
                 final String passWord = userPw.getText().toString();
 
                 Login(userName,passWord);
-//                Response.Listener<String> responseListener = new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        try{
-//                            JSONObject jsonResponse = new JSONObject(response);
-//                            String success = null;
-//                            success = jsonResponse.getString("key");
-//                            if(success != null){
-////                                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-////                                dialog = builder.setMessage("로그인에 성공했습니다.")
-////                                        .setPositiveButton("확인",null)
-////                                        .create();
-////                                dialog.show();
-//                                Toast.makeText(MainActivity.this, "로그인에 성공했습니다.", Toast.LENGTH_SHORT).show();
-//                                Intent intent = new Intent(MainActivity.this,HideActivity.class);
-//                                intent.putExtra("key",success);
-//                                intent.putExtra("username",userName);
-//                                MainActivity.this.startActivity(intent);
-//                                finish();
-//                            }
-//                            else{
-//                                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-//                                dialog = builder.setMessage("계정을 다시 확인하세요.")
-//                                        .setNegativeButton("다시 시도",null)
-//                                        .create();
-//                                dialog.show();
-//                            }
-//                        }catch(Exception e){
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                };
-//                LoginRequest loginRequest = new LoginRequest(userName,passWord,responseListener);
-//                RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
-//                queue.add(loginRequest);
+
             }
         });
 

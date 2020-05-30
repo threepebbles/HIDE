@@ -12,17 +12,11 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
-import com.google.gson.JsonObject;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -235,9 +229,6 @@ public class RegisterActivity extends AppCompatActivity {
                             if(!check.equals("")){
                                 content += "이메일이 유효하지 않거나 중복 사용된 이메일입니다.";
                             }
-//                            content += jsonObject.optString("username", "") + "\n";
-//                            content += jsonObject.optString("password1", "") + "\n";
-//                            content += jsonObject.optString("email", "");
                             dialog = builder.setMessage(content)
                                     .setNegativeButton("확인", null)
                                     .create();

@@ -29,6 +29,4 @@ public interface ServerRequestApi {
     @POST("hide/myfile/rest/get_list/")
     Call<MyFile> ListCheck(@HeaderMap HashMap<String,String> token);
 
-    @POST("hide/myfile/rest/create/")
-    Call<ModifyList> ModifyList(@HeaderMap HashMap<String,String> token, @Field("file_path") String file_path,@Field("state") boolean state);
 }

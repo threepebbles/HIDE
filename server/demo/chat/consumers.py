@@ -21,22 +21,22 @@ class ChatConsumer(WebsocketConsumer):
         if b'user-agent' in self.headers:
             self.user_agent = self.headers[b'user-agent'].decode("utf-8")
 
+            if "Windows" in self.user_agent:
+                print("windows PC websocket is connected")
+
+                if self.user.is_authenticated:
+                    network_state_check(self.user)
+                    network_state_modify(self.user, "True")
+            else:
+                print("mobile websocket is disconnected")
+        else:
+            print("user-agent doesn't exist")
+
         # print(self.user_agent)
         if self.user.is_authenticated:
             print("user=" + str(self.user) + " websocket is connected")
         else:
             print("Anonymous user websocket is connected")
-
-
-        if "Windows" in self.user_agent:
-            print("windows PC websocket is connected")
-
-            if self.user.is_authenticated:
-                network_state_check(self.user)
-                network_state_modify(self.user, "True")
-        else:
-            print("mobile websocket is disconnected")
-
 
         # Join room group
         async_to_sync(self.channel_layer.group_add)(
@@ -52,16 +52,18 @@ class ChatConsumer(WebsocketConsumer):
         else:
             print("Anonymous user websocket is closed")
 
+        if b'user-agent' in self.headers:
+            if "Windows" in self.user_agent:
+                print("windows PC websocket is disconnected")
 
-        if "Windows" in self.user_agent:
-            print("windows PC websocket is disconnected")
-
-            if self.user.is_authenticated:
-                my_network_state = get_object_or_404(NetworkState, author_id=self.user.id)
-                my_network_state.network_state = False
-                my_network_state.save()
+                if self.user.is_authenticated:
+                    my_network_state = get_object_or_404(NetworkState, author_id=self.user.id)
+                    my_network_state.network_state = False
+                    my_network_state.save()
+            else:
+                print("mobile websocket is disconnected")
         else:
-            print("mobile websocket is disconnected")
+            print("user-agent doesn't exist")
 
         # Leave room group
         async_to_sync(self.channel_layer.group_discard)(

@@ -68,9 +68,9 @@ def network_state_check(current_user):
     my_network_state = NetworkState.objects.filter(author=current_user)
     if len(my_network_state)==0:
         network_state_modify(current_user, "False")
-        print("network state created")
-    else:
-        print("network state already exists")
+        # print("network state created")
+    # else:
+        # print("network state already exists")
     return list(NetworkState.objects.filter(author=current_user))[0].network_state
 
 

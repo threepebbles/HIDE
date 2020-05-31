@@ -23,7 +23,6 @@
         </activity>
         <activity android:name=".MainActivity">
         </activity>
-        <activity android:name=".WebViewActivity"/>
         <activity android:name=".HideActivity"/>
         <activity android:name=".RegisterActivity"/>
     </application>

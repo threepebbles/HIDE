@@ -52,7 +52,6 @@ public class ModifyRequest {
             @Override
             public void onClosing(WebSocket webSocket, int code, String reason) {
                 webSocket.close(NORMAL_CLOSURE_STATUE,null);
-                Log.i("WebSockets","Closing : "+code + " / "+ reason);
             }
 
             @Override

@@ -1,6 +1,8 @@
 package com.example.hide;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -117,6 +119,10 @@ public class HideActivity extends AppCompatActivity {
                 String value = keyResponse.getDetail();
                 if(!value.equals("")) {
                     Toast.makeText(HideActivity.this, "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
+                    SharedPreferences auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = auto.edit();
+                    editor.clear();
+                    editor.commit();
                     Intent intents = new Intent(HideActivity.this,MainActivity.class);
                     HideActivity.this.startActivity(intents);
                     finish();
@@ -171,7 +177,6 @@ public class HideActivity extends AppCompatActivity {
                         connectCheck.setText("PC Network Disconnected");
                         connectCheck.setTextColor(Color.RED);
                     }
-                    Toast.makeText(HideActivity.this, ""+networkState, Toast.LENGTH_SHORT).show();
                 }
             }
 

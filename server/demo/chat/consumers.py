@@ -28,7 +28,7 @@ class ChatConsumer(WebsocketConsumer):
             else:
                 print("mobile websocket is disconnected")
         else:
-            print("user-agent doesn't exist")
+            print("user-agent=null is connected")
 
         # print(self.user_agent)
         if self.user.is_authenticated:
@@ -61,7 +61,7 @@ class ChatConsumer(WebsocketConsumer):
             else:
                 print("mobile websocket is disconnected")
         else:
-            print("user-agent doesn't exist")
+            print("user-agent=null is disconnected")
 
         # Leave room group
         async_to_sync(self.channel_layer.group_discard)(
@@ -75,11 +75,13 @@ class ChatConsumer(WebsocketConsumer):
             print("user="+str(self.user) + " sent message")
         else:
             print("Anonymous user sent message")
-
-        if "Windows" in self.user_agent:
-            print("windows PC sent message")
+        if b'user-agent' in self.headers:
+            if "Windows" in self.user_agent:
+                print("windows PC sent message")
+            else:
+                print("mobile sent message")
         else:
-            print("mobile sent message")
+            print("user-agent=null sent message")
 
         text_data_json = json.loads(text_data)
         file_path = text_data_json["file_path"]

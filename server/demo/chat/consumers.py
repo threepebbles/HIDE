@@ -2,26 +2,41 @@ from django.shortcuts import get_object_or_404
 
 import json
 from asgiref.sync import async_to_sync
-from channels.generic.websocket import WebsocketConsumer
+from channels.layers import get_channel_layer
 from hide.views.myfile_views import network_state_check, network_state_modify
 
-from django.contrib.auth.decorators import login_required
-from channels.auth import login
+from channels.generic.websocket import WebsocketConsumer
 
 from hide.models import NetworkState
+from django_user_agents.utils import get_user_agent
 
 class ChatConsumer(WebsocketConsumer):
     def connect(self):
         self.user = self.scope["user"]
-        self.room_name = self.user
-        self.room_group_name = 'chat_%s' % self.user
+        self.room_name = str(self.user)
+        self.room_group_name = 'chat_%s' % str(self.user)
 
+        # print(self.scope)
+        self.headers = dict(self.scope["headers"])
+        self.user_agent = self.headers[b'user-agent'].decode("utf-8")
+
+        # print(self.user_agent)
         if self.user.is_authenticated:
-            network_state_check(self.user)
-            network_state_modify(self.user, "True")
-            print("[server]: user=" + str(self.user) + " websocket is connected")
+            print("user=" + str(self.user) + " websocket is connected")
         else:
-            print("[server]: Anonymous user websocket is connected")
+            print("Anonymous user websocket is connected")
+
+
+        if "Windows" in self.user_agent:
+            print("windows PC websocket is connected")
+
+            if self.user.is_authenticated:
+                network_state_check(self.user)
+                network_state_modify(self.user, "True")
+        else:
+            print("mobile websocket is disconnected")
+
+
         # Join room group
         async_to_sync(self.channel_layer.group_add)(
             self.room_group_name,
@@ -32,12 +47,20 @@ class ChatConsumer(WebsocketConsumer):
 
     def disconnect(self, close_code):
         if (self.user.is_authenticated == True):
-            print("[server]: user=" + str(self.user) + " websocket is closed")
-            my_network_state = get_object_or_404(NetworkState, author_id=self.user.id)
-            my_network_state.network_state = False
-            my_network_state.save()
+            print("user=" + str(self.user) + " websocket is closed")
         else:
-            print("[server]: Anonymous user websocket is closed")
+            print("Anonymous user websocket is closed")
+
+
+        if "Windows" in self.user_agent:
+            print("windows PC websocket is disconnected")
+
+            if self.user.is_authenticated:
+                my_network_state = get_object_or_404(NetworkState, author_id=self.user.id)
+                my_network_state.network_state = False
+                my_network_state.save()
+        else:
+            print("mobile websocket is disconnected")
 
         # Leave room group
         async_to_sync(self.channel_layer.group_discard)(
@@ -48,9 +71,14 @@ class ChatConsumer(WebsocketConsumer):
     # Receive message from WebSocket
     def receive(self, text_data):
         if(self.user.is_authenticated):
-            print("[server]: user="+str(self.user) + " sent message")
+            print("user="+str(self.user) + " sent message")
         else:
-            print("[server]: Anonymous user sent message")
+            print("Anonymous user sent message")
+
+        if "Windows" in self.user_agent:
+            print("windows PC sent message")
+        else:
+            print("mobile sent message")
 
         text_data_json = json.loads(text_data)
         file_path = text_data_json["file_path"]

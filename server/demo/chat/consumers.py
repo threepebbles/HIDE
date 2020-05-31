@@ -6,9 +6,7 @@ from channels.layers import get_channel_layer
 from hide.views.myfile_views import network_state_check, network_state_modify
 
 from channels.generic.websocket import WebsocketConsumer
-
 from hide.models import NetworkState
-from django_user_agents.utils import get_user_agent
 
 class ChatConsumer(WebsocketConsumer):
     def connect(self):

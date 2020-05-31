@@ -18,7 +18,8 @@ class ChatConsumer(WebsocketConsumer):
 
         # print(self.scope)
         self.headers = dict(self.scope["headers"])
-        self.user_agent = self.headers[b'user-agent'].decode("utf-8")
+        if b'user-agent' in self.headers:
+            self.user_agent = self.headers[b'user-agent'].decode("utf-8")
 
         # print(self.user_agent)
         if self.user.is_authenticated:

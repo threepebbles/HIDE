@@ -10,10 +10,22 @@
 {% block content %}
 <body>
     <textarea id="chat-log" cols="100" rows="20"></textarea><br>
-    <input id="chat-file_path-input" type="text" size="100"><br>
-    <input id="chat-file_state-input" type="text" size="100"><br>
-    <input id="chat-submit" type="button" value="Send">
-    
+
+    <!--<div class="form-group">-->
+        <!--<label for="chat-file_path-input">file_path</label>-->
+        <!--<input id="chat-file_path-input" type="text" size="100">-->
+    <!--</div>-->
+    <div class="form-group">
+        <label for="chat-file_path-input" class="control-label">file_path</label>
+        <input name="chat-file_path-input" id="chat-file_path-input" type="text" size="100" placeholder="file_path">
+    </div>
+
+    <div class="form-froup">
+        <label for="chat-file_state-input">file_state</label>
+        <input name="chat-file_state-input" id="chat-file_state-input" type="text" size="100" placeholder="file_state">
+    </div>
+    <input id="chat-submit" type="button" value="send">
+
     {{ room_name|json_script:"room-name" }}
     <script>
         {% if user.is_authenticated %}

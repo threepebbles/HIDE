@@ -19,14 +19,14 @@ class ChatConsumer(WebsocketConsumer):
         if b'user-agent' in self.headers:
             self.user_agent = self.headers[b'user-agent'].decode("utf-8")
 
-            if "Windows" in self.user_agent:
+            if "okhttp" in self.user_agent:
+                print("mobile websocket is disconnected")
+            else:
                 print("windows PC websocket is connected")
 
                 if self.user.is_authenticated:
                     network_state_check(self.user)
                     network_state_modify(self.user, "True")
-            else:
-                print("mobile websocket is disconnected")
         else:
             print("user-agent=null is connected")
 
@@ -51,15 +51,15 @@ class ChatConsumer(WebsocketConsumer):
             print("Anonymous user websocket is closed")
 
         if b'user-agent' in self.headers:
-            if "Windows" in self.user_agent:
+            if "okhttp" in self.user_agent:
+                print("mobile websocket is disconnected")
+            else:
                 print("windows PC websocket is disconnected")
 
                 if self.user.is_authenticated:
                     my_network_state = get_object_or_404(NetworkState, author_id=self.user.id)
                     my_network_state.network_state = False
                     my_network_state.save()
-            else:
-                print("mobile websocket is disconnected")
         else:
             print("user-agent=null is disconnected")
 
@@ -75,11 +75,12 @@ class ChatConsumer(WebsocketConsumer):
             print("user="+str(self.user) + " sent message")
         else:
             print("Anonymous user sent message")
+
         if b'user-agent' in self.headers:
-            if "Windows" in self.user_agent:
-                print("windows PC sent message")
-            else:
+            if "okhttp" in self.user_agent:
                 print("mobile sent message")
+            else:
+                print("windows PC sent message")
         else:
             print("user-agent=null sent message")
 

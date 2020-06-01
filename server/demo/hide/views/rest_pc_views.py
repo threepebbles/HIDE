@@ -24,7 +24,7 @@ def rest_myfile_create(request):
                 return JsonResponse({'result':'success', 'message': 'create success'},
                                     json_dumps_params = {'ensure_ascii': True})
         else:
-            return JsonResponse({'result':'fail', 'message': 'form is not valed'},
+            return JsonResponse({'result':'fail', 'message': 'form is not valid'},
                                 json_dumps_params={'ensure_ascii': True})
     else:
         return JsonResponse({'result': 'fail', 'message': 'use POST'},

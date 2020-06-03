@@ -16,6 +16,7 @@ class ChatConsumer(WebsocketConsumer):
 
         # print(self.scope)
         self.headers = dict(self.scope["headers"])
+
         if b'user-agent' in self.headers:
             self.user_agent = self.headers[b'user-agent'].decode("utf-8")
 
@@ -30,7 +31,8 @@ class ChatConsumer(WebsocketConsumer):
         else:
             print("user-agent=null is connected")
 
-        # print(self.user_agent)
+        print(self.headers)
+        print(self.user_agent)
         if self.user.is_authenticated:
             print("user=" + str(self.user) + " websocket is connected")
         else:

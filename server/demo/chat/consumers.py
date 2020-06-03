@@ -45,6 +45,7 @@ class ChatConsumer(WebsocketConsumer):
         )
 
         self.accept()
+        print()
 
     def disconnect(self, close_code):
         if (self.user.is_authenticated == True):
@@ -70,6 +71,7 @@ class ChatConsumer(WebsocketConsumer):
             self.room_group_name,
             self.channel_name
         )
+        print()
 
     # Receive message from WebSocket
     def receive(self, text_data):
@@ -99,6 +101,7 @@ class ChatConsumer(WebsocketConsumer):
                 'file_state': file_state
             }
         )
+        print()
 
 
     # Receive message from room group

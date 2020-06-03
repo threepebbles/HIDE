@@ -31,8 +31,8 @@ class ChatConsumer(WebsocketConsumer):
         else:
             print("user-agent=null is connected")
 
-        print(self.headers)
-        print(self.user_agent)
+        # print(self.headers)
+        # print(self.user_agent)
         if self.user.is_authenticated:
             print("user=" + str(self.user) + " websocket is connected")
         else:

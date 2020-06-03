@@ -6,15 +6,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="#B9B7B8">
+        android:background="@drawable/registerbackimg">
 
         <TextView
             android:layout_width="280dp"
             android:layout_height="wrap_content"
             android:text="CREATE ACCOUNT"
-            android:layout_marginTop="130dp"
+            android:layout_marginTop="165dp"
             android:layout_gravity="center"
-            android:textSize="20dp"
+            android:textColor="#000000"
+            android:gravity="center"
+            android:textSize="30dp"
             android:textStyle="bold"/>
 
         <LinearLayout
@@ -22,23 +24,24 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="20dp">
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:scaleType="center"
                 android:id="@+id/check_user_null"
-                android:background="#883291b5"/>
+                android:background="#F3A7A0"/>
             <EditText
                 android:id="@+id/register_id"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:background="#883291b5"
+                android:background="#F3A7A0"
                 android:hint="UserName"
                 android:padding="10dp"
-                android:textColor="#c0c0c0"
+                android:textColor="#000000"
+                android:textStyle="bold"
                 android:textColorHint="#ffffff" />
 
         </LinearLayout>
@@ -48,14 +51,14 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="20dp">
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:scaleType="center"
                 android:id="@+id/check_pw_null"
-                android:background="#883291b5"/>
+                android:background="#F3A7A0"/>
             <EditText
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
@@ -63,10 +66,11 @@
                 android:inputType="textPassword"
                 android:layout_gravity="center"
                 android:padding="10dp"
-                android:textColor="#c0c0c0"
+                android:textColor="#000000"
+                android:textStyle="bold"
                 android:textColorHint="#ffffff"
                 android:id="@+id/register_pw"
-                android:background="#883291b5"/>
+                android:background="#F3A7A0"/>
 
         </LinearLayout>
 
@@ -75,14 +79,14 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="20dp">
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:scaleType="center"
                 android:id="@+id/check_pw_equal"
-                android:background="#883291b5"/>
+                android:background="#F3A7A0"/>
             <EditText
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
@@ -90,10 +94,11 @@
                 android:inputType="textPassword"
                 android:layout_gravity="center"
                 android:padding="10dp"
-                android:textColor="#c0c0c0"
+                android:textColor="#000000"
+                android:textStyle="bold"
                 android:textColorHint="#ffffff"
                 android:id="@+id/register_check_pw"
-                android:background="#883291b5"/>
+                android:background="#F3A7A0"/>
 
         </LinearLayout>
 
@@ -102,14 +107,14 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="20dp">
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:scaleType="center"
                 android:id="@+id/check_email_null"
-                android:background="#883291b5"/>
+                android:background="#F3A7A0"/>
             <EditText
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
@@ -117,10 +122,11 @@
                 android:inputType="textEmailAddress"
                 android:layout_gravity="center"
                 android:padding="10dp"
-                android:textColor="#c0c0c0"
+                android:textColor="#000000"
+                android:textStyle="bold"
                 android:textColorHint="#ffffff"
                 android:id="@+id/register_email"
-                android:background="#883291b5"/>
+                android:background="#F3A7A0"/>
 
         </LinearLayout>
 
@@ -129,8 +135,8 @@
             android:layout_width="280dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:background="#880099a4"
+            android:layout_marginTop="20dp"
+            android:background="#1664AD"
             android:text="CONFIRM"
             android:textColor="#ffffff"
             android:textSize="20dp"

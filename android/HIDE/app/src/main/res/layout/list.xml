@@ -4,16 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:background="#883291b5">
+    android:background="#1664AD">
     <HorizontalScrollView
         android:layout_width="300dp"
         android:layout_height="wrap_content">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="리스트"
-            android:padding="10dp"
+            android:text=" 리스트"
             android:textColor="#ffffff"
+            android:padding="15dp"
             android:id="@+id/listPath"
             android:drawableStart="@drawable/ic_folder_origin_24dp"
             android:drawableLeft="@drawable/ic_folder_origin_24dp"

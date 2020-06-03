@@ -37,6 +37,7 @@ public class ModifyRequest {
             @Override
             public void onOpen(WebSocket webSocket, Response response) {
                 webSocket.send(jsonString);
+                webSocket.close(NORMAL_CLOSURE_STATUE,null);
             }
 
             @Override

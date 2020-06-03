@@ -19,7 +19,6 @@ public class PathListAdapter extends BaseAdapter {
     private Context context;
     private List<PathList> pathList;
     private String token;
-    private ServerRequestApi serverRequestApi;
 
     public PathListAdapter(Context context, List<PathList> pathList,String token) {
         this.context = context;
@@ -46,28 +45,24 @@ public class PathListAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         View v = View.inflate(context,R.layout.list,null);
         final TextView listPath = (TextView) v.findViewById(R.id.listPath);
-        Switch hideSwitch = (Switch) v.findViewById(R.id.hideSwitch);
-
+        final Switch hideSwitch = (Switch) v.findViewById(R.id.hideSwitch);
         listPath.setText(pathList.get(position).getPath());
         hideSwitch.setChecked(pathList.get(position).isOnOff());
         final ModifyRequest modifyRequest = new ModifyRequest();
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://34.64.186.183:8000/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        serverRequestApi = retrofit.create(ServerRequestApi.class);
 
         hideSwitch.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
                     //여기에다가 이제 신호주고 받아서 성공하면 토스트메시지 출력
+                    hideSwitch.setEnabled(false);
                     modifyRequest.Websocket(token,listPath.getText().toString(),isChecked);
-                    Toast.makeText(context, "은닉 활성화!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "전송완료, 잠시 후 새로고침 해주세요", Toast.LENGTH_SHORT).show();
                 }else{
                     // 마찬가지
+                    hideSwitch.setEnabled(false);
                     modifyRequest.Websocket(token,listPath.getText().toString(),isChecked);
-                    Toast.makeText(context, "은닉 비활성화!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "전송완료, 잠시 후 새로고침 해주세요", Toast.LENGTH_SHORT).show();
                 }
             }
         });

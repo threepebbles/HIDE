@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -19,8 +20,6 @@ import androidx.appcompat.app.AlertDialog;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -46,13 +45,13 @@ public class HideActivity extends AppCompatActivity {
         pathList = new ArrayList<PathList>();
 
         final Button LogoutButton = (Button) findViewById(R.id.LogoutButton);
-        Button RefreshButton = (Button) findViewById(R.id.RefreshButton);
+        ImageButton RefreshButton = (ImageButton) findViewById(R.id.RefreshButton);
         final LinearLayout notice = (LinearLayout) findViewById(R.id.notice);
         final Intent intent = getIntent();
         String username = intent.getExtras().getString("username"); // 사용자정보 출력
 
         TextView user = (TextView) findViewById(R.id.UserName);
-        user.setText("사용자 계정 : "+username);
+        user.setText(username);
 
         final String sid = intent.getExtras().getString("session");
 
@@ -170,11 +169,11 @@ public class HideActivity extends AppCompatActivity {
                 if(!value.equals("")) {
                     if(networkState){
                         connect.setImageResource(R.drawable.ic_cast_connected_green_55dp);
-                        connectCheck.setText("PC Network Connected");
+                        connectCheck.setText("PC Connected");
                         connectCheck.setTextColor(Color.GREEN);
                     }else{
                         connect.setImageResource(R.drawable.ic_cast_connected_red_55dp);
-                        connectCheck.setText("PC Network Disconnected");
+                        connectCheck.setText("PC Disconnected");
                         connectCheck.setTextColor(Color.RED);
                     }
                 }

@@ -33,7 +33,7 @@ def chk_overlap(path): # 중복이면 True return
         if t == '': 
             o.close()
             return False
-        if t.rstrip().split('?')[1] == path:
+        if os.path.abspath(t.rstrip().split('?')[1]) == os.path.abspath(path):
             o.close()
             return True
 

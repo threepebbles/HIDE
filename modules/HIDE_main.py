@@ -37,6 +37,8 @@ class HideDialog(QDialog):
         self.logout_pushButton.clicked.connect(self.logout_NumClicked)
         self.login_pushButton.clicked.connect(self.login_NumClicked)
 
+        self.re_pushButton.clicked.connect(self.refresh_NumClicked)
+
         self.widget_3.setStyleSheet('image:url(../image/background.png);border:0px;')
         self.widget_2.setStyleSheet('image:url(../image/filelist.png);border:0px;')
         self.Folder_widget.setStyleSheet('image:url(../image/path.png);border:0px;')
@@ -161,6 +163,11 @@ class HideDialog(QDialog):
         QMessageBox.about(self, "LOGIN", "LOGIN!")
         login.main_dialog.show()
         self.close()
+
+    def refresh_NumClicked(self):
+        self.listWidget_2.clear()
+        self.listWidget_1.clear()
+        self.originlist()
 
     def originlist(self):
         origin = StateManagement.get_path_of_hiddenlist()

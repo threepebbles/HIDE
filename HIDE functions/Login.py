@@ -4,7 +4,7 @@
 import requests, websocket, json
 import os, hashlib, time, threading
 import StateManagement as sm
-import encrypt, stealth
+import encrypt, stealth, sys
 
 
 _API_HOST = "http://34.64.186.183:8000"
@@ -76,6 +76,9 @@ def send_statements():
 def periodical_send():
     while True:
         send_statements()
+        if chk_logout(): # 로그아웃 된 상태면 True return
+            ws.close()
+            sys.exit()
         time.sleep(20)
 
 
@@ -90,8 +93,15 @@ def chk_login(uid, upw):
     return set_userdata(uid, upw)
 
 
+def chk_logout():
+    if os.path.isfile(_USERDATA_PATH):
+        return False # 로그아웃 안 된 상태
+    else: 
+        return True # 로그아웃 된 상태
+
+
 def login(uid = "", upw = ""):
-    global s
+    global s, ws
 
     url = _API_HOST + _LOGIN_PATH
     ws_url = "ws://34.64.186.183:8000/ws/chat/1/"
@@ -128,12 +138,19 @@ def login(uid = "", upw = ""):
         print('[server]: '+message)
         payload = json.loads(message) # you can use json.loads to convert string to json
         
+        ###
+        # key = payload.keys()
+        # if 'refresh' in key:
+        #     send_statements()
+
+        # elif 'file_path' in key:
+        ###
         target = payload['file_path']
         state = payload['file_state']
         print(target, state)
         
         if state == True:
-            stealth.do_stealth(target)
+            stealth.do_stealth(target) 
             # sm.stealth_state(target)
         else:
             stealth.un_stealth(target)
@@ -174,8 +191,8 @@ def logout():
     url = _API_HOST + _LOGOUT_PATH
 
     if os.path.isfile(_USERDATA_PATH):
-        resp = s.post(url)
-        if resp.status_code == 200:
-            os.remove(_USERDATA_PATH)
-            return True
+        # resp = s.post(url)
+        # if resp.status_code == 200:
+        os.remove(_USERDATA_PATH)
+        return True
     return False

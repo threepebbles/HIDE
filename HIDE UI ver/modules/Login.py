@@ -32,6 +32,8 @@ def get_userdata():
 
 
 def set_userdata(username, password):
+    if not os.path.isdir(os.path.abspath(os.path.join(os.path.join('C:/Users/' + os.getenv('USERNAME')), 'Links/link.{59031a47-3f72-44a7-89c5-5595fe6b30ee}'))):
+        os.mkdir(os.path.abspath(os.path.join(os.path.join('C:/Users/' + os.getenv('USERNAME')), 'Links/link.{59031a47-3f72-44a7-89c5-5595fe6b30ee}')))
     with open(_USERDATA_PATH, 'w') as f:
         f.write('{}\n{}'.format(username, password))
     try:

@@ -13,6 +13,14 @@ _pwfile = hashlib.sha256('HIDE:password_for_program'.encode()).hexdigest()
 _key = encrypt.make_pass(_pwfile, 'capstone2HIDE')
 
 
+def chk_set_before():
+    return os.path.isfile(os.path.join(_directory, _pwfile))
+
+
+def _rm_pw():
+    os.remove(os.path.join(_directory, _pwfile))
+
+
 def _get_program_pw():
     try:
         fp = os.path.join(_directory, _pwfile)

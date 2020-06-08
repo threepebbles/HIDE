@@ -9,7 +9,11 @@ _LIST_DIRECTORY = os.path.abspath(os.path.join(os.path.join('C:/Users/' + os.get
 
 
 def get_path_of_hiddenlist():
-    return os.path.abspath(os.path.join(_LIST_DIRECTORY, hashname('C:/' + os.getenv('USERNAME') + 'hidden entry')))
+    f = os.path.abspath(os.path.join(_LIST_DIRECTORY, hashname('C:/' + os.getenv('USERNAME') + 'hidden entry')))
+    if not os.path.isfile(f):
+        t = open(f, 'w')
+        t.close()
+    return f
 
 
 def hashname(path):
@@ -42,10 +46,6 @@ def register(path, file=False):
     path = os.path.abspath(path)
     f = get_path_of_hiddenlist()
     
-    if not os.path.isfile(f):
-        t = open(f, 'w')
-        t.close()
-
     if chk_overlap(path):
         return False
 

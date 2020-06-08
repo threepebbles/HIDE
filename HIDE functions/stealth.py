@@ -28,7 +28,7 @@ def create_list_file(path, key):
 
 
 # stealth 기능
-def do_stealth(path, key):
+def do_stealth(path, key='capstone2hide'):
     global f # 주어진 인자 path에 대해서 수행되는 모든 링크 내용을 기록하는 파일
 
     path = os.path.abspath(path)
@@ -145,7 +145,7 @@ def find_list(path):
 
 
 # stealth 해제 기능
-def un_stealth(path, key):
+def un_stealth(path, key='capstone2hide'):
     global tmp_file_name
 
     path = os.path.abspath(path)

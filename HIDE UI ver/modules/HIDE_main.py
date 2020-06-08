@@ -120,6 +120,9 @@ class HideDialog(QDialog):
 
     def select_NumClicked(self):
         fname = QFileDialog.getOpenFileName(self)
+        if fname[0] == '':
+            return
+
         global item
         item = QListWidgetItem(fname[0])
 
@@ -130,6 +133,8 @@ class HideDialog(QDialog):
 
     def folder_NumClicked(self):
         fname = QFileDialog.getExistingDirectory(self)
+        if fname[0] == '':
+            return
         item = QListWidgetItem(fname)
 
         if StateManagement.register(fname, False):

@@ -21,15 +21,14 @@ class ChatConsumer(WebsocketConsumer):
             self.user_agent = self.headers[b'user-agent'].decode("utf-8")
 
             if "okhttp" in self.user_agent:
-                print("mobile websocket is disconnected")
+                print("mobile websocket is connected")
             else:
-                print("windows PC websocket is connected")
-
+                print("some user-agent is connected")
                 if self.user.is_authenticated:
                     network_state_check(self.user)
                     network_state_modify(self.user, "True")
         else:
-            print("user-agent=null is connected")
+            print("PC websocket is connected")
 
             if self.user.is_authenticated:
                 network_state_check(self.user)
@@ -61,14 +60,13 @@ class ChatConsumer(WebsocketConsumer):
             if "okhttp" in self.user_agent:
                 print("mobile websocket is disconnected")
             else:
-                print("windows PC websocket is disconnected")
-
+                print("some user-agent is disconnected")
                 if self.user.is_authenticated:
                     my_network_state = get_object_or_404(NetworkState, author_id=self.user.id)
                     my_network_state.network_state = False
                     my_network_state.save()
         else:
-            print("user-agent=null is disconnected")
+            print("PC websocket is disconnected")
 
             if self.user.is_authenticated:
                 my_network_state = get_object_or_404(NetworkState, author_id=self.user.id)
@@ -95,22 +93,29 @@ class ChatConsumer(WebsocketConsumer):
             else:
                 print("some user-agent sent message")
         else:
-            print("user-agent=null sent message")
+            print("PC sent message")
+        print()
 
         text_data_json = json.loads(text_data)
-        file_path = text_data_json["file_path"]
-        file_state = text_data_json["file_state"]
-
-        # Send message to room group
-        async_to_sync(self.channel_layer.group_send)(
-            self.room_group_name,
-            {
-                'type': 'chat_message',
-                'file_path': file_path,
-                'file_state': file_state
-            }
-        )
-        print()
+        if ("refresh" in text_data_json):
+            # Send message to room group
+            async_to_sync(self.channel_layer.group_send)(
+                self.room_group_name,
+                {
+                    'type': 'chat_message',
+                    'refresh': text_data_json["refresh"]
+                }
+            )
+        elif("file_path" in text_data_json):
+            # Send message to room group
+            async_to_sync(self.channel_layer.group_send)(
+                self.room_group_name,
+                {
+                    'type': 'chat_message',
+                    'file_path': text_data_json["file_path"],
+                    'file_state': text_data_json["file_state"]
+                }
+            )
 
 
     # Receive message from room group

@@ -31,6 +31,10 @@ class ChatConsumer(WebsocketConsumer):
         else:
             print("user-agent=null is connected")
 
+            if self.user.is_authenticated:
+                network_state_check(self.user)
+                network_state_modify(self.user, "True")
+
         # print(self.headers)
         # print(self.user_agent)
         if self.user.is_authenticated:
@@ -66,6 +70,11 @@ class ChatConsumer(WebsocketConsumer):
         else:
             print("user-agent=null is disconnected")
 
+            if self.user.is_authenticated:
+                my_network_state = get_object_or_404(NetworkState, author_id=self.user.id)
+                my_network_state.network_state = False
+                my_network_state.save()
+
         # Leave room group
         async_to_sync(self.channel_layer.group_discard)(
             self.room_group_name,
@@ -84,7 +93,7 @@ class ChatConsumer(WebsocketConsumer):
             if "okhttp" in self.user_agent:
                 print("mobile sent message")
             else:
-                print("windows PC sent message")
+                print("some user-agent sent message")
         else:
             print("user-agent=null sent message")
 

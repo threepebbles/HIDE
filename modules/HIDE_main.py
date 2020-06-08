@@ -83,6 +83,11 @@ class HideDialog(QDialog):
             '''
                 QPushButton{image:url(../image/login_bt.png);border:0px;}
             ''')
+        self.re_pushButton.setStyleSheet(
+            '''
+                QPushButton{image:url(../image/refresh_1.png);border:0px;}
+                QPushButton:hover{image:url(../image/refresh_2.png);border:0px;}
+            ''')
 
 
     def lock_NumClicked(self):

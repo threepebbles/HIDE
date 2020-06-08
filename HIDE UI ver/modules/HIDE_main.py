@@ -133,7 +133,7 @@ class HideDialog(QDialog):
 
     def folder_NumClicked(self):
         fname = QFileDialog.getExistingDirectory(self)
-        if fname[0] == '':
+        if fname == '':
             return
         item = QListWidgetItem(fname)
 

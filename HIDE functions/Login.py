@@ -4,7 +4,7 @@
 import requests, websocket, json
 import os, hashlib, time, threading
 import StateManagement as sm
-import encrypt
+import encrypt, stealth
 
 
 _API_HOST = "http://34.64.186.183:8000"
@@ -79,6 +79,17 @@ def periodical_send():
         time.sleep(20)
 
 
+def chk_login(uid, upw):
+    url = _API_HOST + _LOGIN_PATH
+    login_data = {'username': uid, "password": upw}
+
+    resp = requests.post(url, data=login_data)
+    if resp.status_code != 200:
+        return False
+    
+    return set_userdata(uid, upw)
+
+
 def login(uid = "", upw = ""):
     global s
 
@@ -102,7 +113,7 @@ def login(uid = "", upw = ""):
     if resp.status_code != 200:
         return False
 
-    set_userdata(uid, upw)
+    # set_userdata(uid, upw)
     
     my_cookie = resp.headers['Set-Cookie']
 
@@ -121,10 +132,12 @@ def login(uid = "", upw = ""):
         state = payload['file_state']
         print(target, state)
         
-        if state == 'True':
-            sm.stealth_state(target)
+        if state == True:
+            stealth.do_stealth(target)
+            # sm.stealth_state(target)
         else:
-            sm.recover_state(target)
+            stealth.un_stealth(target)
+            # sm.recover_state(target)
 
 
     def on_error(ws, error):

@@ -40,8 +40,8 @@ class HideDialog(QDialog):
         self.re_pushButton.clicked.connect(self.refresh_NumClicked)
 
         self.widget_3.setStyleSheet('image:url(../image/background.png);border:0px;')
-        self.widget_2.setStyleSheet('image:url(../image/filelist.png);border:0px;')
-        self.Folder_widget.setStyleSheet('image:url(../image/path.png);border:0px;')
+        self.widget_2.setStyleSheet('image:url(../image/path.png);border:0px;')
+        self.Folder_widget.setStyleSheet('image:url(../image/filelist.png);border:0px;')
 
         self.lock_pushButton.setStyleSheet(
         '''

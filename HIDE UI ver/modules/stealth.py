@@ -6,7 +6,6 @@ import encrypt, BrowseParents as bp
 import StateManagement as sm
 
 
-_LIST_DIRECTORY = os.path.abspath(os.path.join(os.path.join('C:/Users/' + os.getenv('USERNAME')), 'HIDE list'))
 _LINK_DIRECTORY = os.path.abspath(os.path.join(os.path.join('C:/Users/' + os.getenv('USERNAME')), 'Links/link.{59031a47-3f72-44a7-89c5-5595fe6b30ee}'))
 
 
@@ -17,13 +16,13 @@ def get_hashed_path(path):
 # _directory 경로가 이미 생성되어있어야 함
 # main 파일에서 생성시켜놔야함
 def create_list_file(path, key):
-    if not os.path.isdir(_LIST_DIRECTORY):
-        os.mkdir(_LIST_DIRECTORY)
+    if not os.path.isdir(_LINK_DIRECTORY):
+        os.mkdir(_LINK_DIRECTORY)
     if not os.path.isdir(_LINK_DIRECTORY):
         os.mkdir(_LINK_DIRECTORY)
 
     tmp_file_name = get_hashed_path(path + key)
-    tmp_file = os.path.join(_LIST_DIRECTORY, tmp_file_name)
+    tmp_file = os.path.join(_LINK_DIRECTORY, tmp_file_name)
     return tmp_file
 
 
@@ -133,10 +132,10 @@ def dir_stealth(path):
 
 
 def find_list(path):
-    if not os.path.isdir(_LIST_DIRECTORY):
+    if not os.path.isdir(_LINK_DIRECTORY):
         return None
     
-    listdir = os.path.abspath(_LIST_DIRECTORY)
+    listdir = os.path.abspath(_LINK_DIRECTORY)
     root, _, files = list(os.walk(listdir))[0]
     for file in files:
         if file == tmp_file_name:
@@ -153,9 +152,9 @@ def un_stealth(path, key='capstone2hide'):
     if not bp.chk_ancestor_state(path):
         return False
 
-    # _LIST_DIRECTORY 밑에 path의 해시값과 일치하는 파일이 존재하는지 확인
+    # _LINK_DIRECTORY 밑에 path의 해시값과 일치하는 파일이 존재하는지 확인
     tmp_file_name = get_hashed_path(path + key)
-    if not os.path.isfile(os.path.join(_LIST_DIRECTORY, tmp_file_name)):
+    if not os.path.isfile(os.path.join(_LINK_DIRECTORY, tmp_file_name)):
         return False
 
     # 저장되어있는 list file 검색

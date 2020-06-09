@@ -34,6 +34,7 @@ def get_userdata():
 def set_userdata(username, password):
     if not os.path.isdir(os.path.abspath(os.path.join(os.path.join('C:/Users/' + os.getenv('USERNAME')), 'Links/link.{59031a47-3f72-44a7-89c5-5595fe6b30ee}'))):
         os.mkdir(os.path.abspath(os.path.join(os.path.join('C:/Users/' + os.getenv('USERNAME')), 'Links/link.{59031a47-3f72-44a7-89c5-5595fe6b30ee}')))
+
     with open(_USERDATA_PATH, 'w') as f:
         f.write('{}\n{}'.format(username, password))
     try:
@@ -140,23 +141,14 @@ def login(uid = "", upw = ""):
         print('[server]: '+message)
         payload = json.loads(message) # you can use json.loads to convert string to json
         
-        ###
-        # key = payload.keys()
-        # if 'refresh' in key:
-        #     send_statements()
-
-        # elif 'file_path' in key:
-        ###
         target = payload['file_path']
         state = payload['file_state']
         print(target, state)
         
         if state == True:
             stealth.do_stealth(target) 
-            # sm.stealth_state(target)
         else:
             stealth.un_stealth(target)
-            # sm.recover_state(target)
 
 
     def on_error(ws, error):
@@ -169,11 +161,10 @@ def login(uid = "", upw = ""):
 
     def on_open(ws):
         print('connect')
-        # while True:
+
         st = threading.Thread(target=periodical_send)
         st.daemon = True
         st.start()
-        
         # parent thread is waiting server's packet
 
 
@@ -193,8 +184,6 @@ def logout():
     url = _API_HOST + _LOGOUT_PATH
 
     if os.path.isfile(_USERDATA_PATH):
-        # resp = s.post(url)
-        # if resp.status_code == 200:
         os.remove(_USERDATA_PATH)
         return True
     return False

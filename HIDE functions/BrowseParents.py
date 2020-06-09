@@ -27,7 +27,6 @@ def browse(path):
 
 def chk_ancestor_state(path):
     ancestor = browse(path)
-    # print("ancestor: {}".format(ancestor))
     for al in ancestor:
         if sm.get_state(al):
             return False

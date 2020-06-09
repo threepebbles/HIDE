@@ -1,15 +1,14 @@
 # coding=<utf-8>
 
-############################################################ list파일을 암호화하지 않음
+
 import hashlib, os
 
 
 _LINK_DIRECTORY = os.path.abspath(os.path.join(os.path.join('C:/Users/' + os.getenv('USERNAME')), 'Links/link.{59031a47-3f72-44a7-89c5-5595fe6b30ee}'))
-_LIST_DIRECTORY = os.path.abspath(os.path.join(os.path.join('C:/Users/' + os.getenv('USERNAME')), 'HIDE list'))
 
 
 def get_path_of_hiddenlist():
-    f = os.path.abspath(os.path.join(_LIST_DIRECTORY, hashname('C:/' + os.getenv('USERNAME') + 'hidden entry')))
+    f = os.path.abspath(os.path.join(_LINK_DIRECTORY, hashname('C:/' + os.getenv('USERNAME') + 'hidden entry')))
     if not os.path.isfile(f):
         t = open(f, 'w')
         t.close()

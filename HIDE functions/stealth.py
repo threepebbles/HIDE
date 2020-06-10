@@ -33,6 +33,7 @@ def do_stealth(path, key='capstone2hide'):
     path = os.path.abspath(path)
 
     if not bp.chk_ancestor_state(path):
+        print('ancestor hide')
         return False
 
     tmp_file = create_list_file(path, key)
@@ -150,6 +151,7 @@ def un_stealth(path, key='capstone2hide'):
     path = os.path.abspath(path)
 
     if not bp.chk_ancestor_state(path):
+        print('ancestor hide')
         return False
 
     # _LINK_DIRECTORY 밑에 path의 해시값과 일치하는 파일이 존재하는지 확인

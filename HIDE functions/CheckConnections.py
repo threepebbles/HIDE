@@ -6,15 +6,12 @@ import Login
 
 
 def check_net():
-    # _log_file = 'C:/Users/' + os.getenv('USERNAME') + '/Desktop/log.txt'
     while True:
         try:
             urllib.request.urlopen('http://216.58.192.142', timeout=1)
             
             # network is connected
             print('connect network')
-            # with open(_log_file, 'a') as f:
-            #     f.write('connect network {}\n'.format(time.strftime('%c', time.localtime(time.time()))))
 
             Login.login()
 
@@ -22,6 +19,4 @@ def check_net():
             # network is disconnected
             print('disconnect network')
             print(err)
-            # with open(_log_file, 'a') as f:
-            #     f.write('disconnect network {}\n'.format(time.strftime('%c', time.localtime(time.time()))))
         time.sleep(10)

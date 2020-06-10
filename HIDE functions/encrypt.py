@@ -35,6 +35,7 @@ def decrypt_file(key, input_file, chunksize=24 * 1024):
         os.rename(output_file, input_file)
         return True
     except Exception as e:
+        print(e)
         return False
 
 

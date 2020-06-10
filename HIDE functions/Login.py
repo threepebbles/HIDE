@@ -86,14 +86,18 @@ def periodical_send():
 
 
 def chk_login(uid, upw):
-    url = _API_HOST + _LOGIN_PATH
-    login_data = {'username': uid, "password": upw}
+    try:
+        url = _API_HOST + _LOGIN_PATH
+        login_data = {'username': uid, "password": upw}
 
-    resp = requests.post(url, data=login_data)
-    if resp.status_code != 200:
+        resp = requests.post(url, data=login_data)
+        if resp.status_code != 200:
+            return False
+        
+        return set_userdata(uid, upw)
+    except Exception as e:
+        print(e)
         return False
-    
-    return set_userdata(uid, upw)
 
 
 def chk_logout():
@@ -126,8 +130,6 @@ def login(uid = "", upw = ""):
     if resp.status_code != 200:
         return False
 
-    # set_userdata(uid, upw)
-    
     my_cookie = resp.headers['Set-Cookie']
 
     try:

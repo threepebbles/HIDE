@@ -5,7 +5,7 @@ Hide Individual Data Exactly
 
 ui에서 가져가야할 파일
 
-BrowseParents.py
+BrowseParents.py\n
 CheckConnections.py
 encrypt.py
 Login.py

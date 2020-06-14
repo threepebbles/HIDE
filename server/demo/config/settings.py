@@ -24,9 +24,34 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "34.64.186.183"]
 
-# Application definition
+# WSGI_APPLICATION = 'config.wsgi.application'
+ASGI_APPLICATION = 'config.routing.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('localhost', 6379)],
+        },
+    },
+}
 
+
+
+# Application definition
 INSTALLED_APPS = (
+    'channels',
+    'chat',
+    'hide.apps.HideConfig',
+
+    'rest_framework',
+    'rest_framework.authtoken',
+    'rest_auth',
+    'rest_auth.registration',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.facebook',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -34,17 +59,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-
-    'rest_framework',
-    'rest_framework.authtoken',
-    'rest_auth',
-    'allauth',
-    'allauth.account',
-    'rest_auth.registration',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.facebook',
-    'rest_framework_swagger',
-    'hide.apps.HideConfig',
 )
 
 MIDDLEWARE = (
@@ -62,8 +76,6 @@ MIDDLEWARE = (
 MIDDLEWARE_CLASSES = MIDDLEWARE
 
 ROOT_URLCONF = 'config.urls'
-
-WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
@@ -134,4 +146,4 @@ SWAGGER_SETTINGS = {
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
-# REST_USE_JWT = True
+

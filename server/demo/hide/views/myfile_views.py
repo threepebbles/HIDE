@@ -1,18 +1,13 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
-from django.utils import timezone
 
-from django.db import models
-from ..forms import MyfileForm
-from ..models import Myfile
+from ..forms import MyfileForm, NetworkStateForm
+from ..models import Myfile, NetworkState
 
 
 @login_required(login_url='common:login')
 def myfile_create(request):
-    """
-    hide 질문등록
-    """
     if request.method == 'POST':
         form = MyfileForm(request.POST)
         if form.is_valid():
@@ -36,12 +31,8 @@ def myfile_create(request):
 
 
 @login_required(login_url='common:login')
-def myfile_modify(request, current_author_id, myfile_index):
-    """
-    hide 질문수정
-    """
-    # myfile = Myfile.objects.filter(author_id=current_author_id, index=myfile_index)
-    myfile = get_object_or_404(Myfile, index=myfile_index)
+def myfile_modify(request, current_author_id, myfile_id):
+    myfile = get_object_or_404(Myfile, id=myfile_id)
 
     if request.user != myfile.author:
         messages.error(request, '수정권한이 없습니다')
@@ -69,9 +60,23 @@ def myfile_modify(request, current_author_id, myfile_index):
 
 @login_required(login_url='common:login')
 def myfile_delete(request, current_author_id):
-    """
-    hide 질문삭제
-    """
-
     Myfile.objects.filter(author_id=current_author_id).delete()
     return redirect('hide:myfile_list')
+
+
+def network_state_check(current_user):
+    my_network_state = NetworkState.objects.filter(author=current_user)
+    if len(my_network_state)==0:
+        network_state_modify(current_user, "False")
+        # print("network state created")
+    # else:
+        # print("network state already exists")
+    return list(NetworkState.objects.filter(author=current_user))[0].network_state
+
+
+def network_state_modify(current_user, state):
+    form = NetworkStateForm()
+    ns = form.save(commit=False)
+    ns.author = current_user
+    ns.network_state = state
+    ns.save()

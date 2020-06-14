@@ -45,54 +45,54 @@ class HideDialog(QDialog, hide_ui.Ui_Dialog):
         root_path = getattr(sys, '_MEIPASS')
         print('root_path: ', root_path)
 
-        self.widget_3.setStyleSheet('image:url(' + os.path.join(root_path, 'background.png') +');border:0px;')
-        self.widget_2.setStyleSheet('image:url(' + os.path.join(root_path, 'path.png') + ');border:0px;')
-        self.Folder_widget.setStyleSheet('image:url(' + os.path.join(root_path, 'filelist.png') + ');border:0px;')
+        self.widget_3.setStyleSheet('image:url(' + os.path.join(root_path, 'background.png').replace("\\", "/") +');border:0px;')
+        self.widget_2.setStyleSheet('image:url(' + os.path.join(root_path, 'path.png').replace("\\", "/") + ');border:0px;')
+        self.Folder_widget.setStyleSheet('image:url(' + os.path.join(root_path, 'filelist.png').replace("\\", "/") + ');border:0px;')
 
         self.lock_pushButton.setStyleSheet(
         '''
-            QPushButton{image:url(''' + os.path.join(root_path, 'lock.png') + ''');border:0px;}
-            QPushButton:hover{image:url(''' + os.path.join(root_path, 'lock_c.png') + ''');border:0px;}
+            QPushButton{image:url(''' + os.path.join(root_path, 'lock.png').replace("\\", "/") + ''');border:0px;}
+            QPushButton:hover{image:url(''' + os.path.join(root_path, 'lock_c.png').replace("\\", "/") + ''');border:0px;}
         ''')
         self.unlock_pushButton.setStyleSheet(
         '''
-            QPushButton{image:url(''' + os.path.join(root_path, 'unlock.png') + ''');border:0px;}
-            QPushButton:hover{image:url(''' + os.path.join(root_path, 'lock_c.png') + ''');border:0px;}
+            QPushButton{image:url(''' + os.path.join(root_path, 'unlock.png').replace("\\", "/") + ''');border:0px;}
+            QPushButton:hover{image:url(''' + os.path.join(root_path, 'lock_c.png').replace("\\", "/") + ''');border:0px;}
         ''')
         self.quit_pushButton.setStyleSheet(
         '''
-            QPushButton{image:url(''' + os.path.join(root_path, 'quit.png') + ''');border:0px;}
-            QPushButton:hover{image:url(''' + os.path.join(root_path, 'quit_c.png') + ''');border:0px;}
+            QPushButton{image:url(''' + os.path.join(root_path, 'quit.png').replace("\\", "/") + ''');border:0px;}
+            QPushButton:hover{image:url(''' + os.path.join(root_path, 'quit_c.png').replace("\\", "/") + ''');border:0px;}
         ''')
 
         self.Select_pushButton.setStyleSheet(
             '''
-                QPushButton{image:url(''' + os.path.join(root_path, 'select_b.png') + ''');border:0px;}
+                QPushButton{image:url(''' + os.path.join(root_path, 'select_b.png').replace("\\", "/") + ''');border:0px;}
             ''')
         self.Folder_pushButton.setStyleSheet(
             '''
-                QPushButton{image:url(''' + os.path.join(root_path, 'view_b.png') + ''');border:0px;}
+                QPushButton{image:url(''' + os.path.join(root_path, 'view_b.png').replace("\\", "/") + ''');border:0px;}
             ''')
         self.Delete_pushButton.setStyleSheet(
             '''
-                QPushButton{image:url(''' + os.path.join(root_path, 'trash.png') + ''');border:0px;}
+                QPushButton{image:url(''' + os.path.join(root_path, 'trash.png').replace("\\", "/") + ''');border:0px;}
             ''')
         self.Delete_pushButton_2.setStyleSheet(
             '''
-                QPushButton{image:url(''' + os.path.join(root_path, 'trash.png') + ''');border:0px;}
+                QPushButton{image:url(''' + os.path.join(root_path, 'trash.png').replace("\\", "/") + ''');border:0px;}
             ''')
         self.logout_pushButton.setStyleSheet(
             '''
-                QPushButton{image:url(''' + os.path.join(root_path, 'logout_bt.png') + ''');border:0px;}
+                QPushButton{image:url(''' + os.path.join(root_path, 'logout_bt.png').replace("\\", "/") + ''');border:0px;}
             ''')
         self.login_pushButton.setStyleSheet(
             '''
-                QPushButton{image:url(''' + os.path.join(root_path, 'login_bt.png') + ''');border:0px;}
+                QPushButton{image:url(''' + os.path.join(root_path, 'login_bt.png').replace("\\", "/") + ''');border:0px;}
             ''')
         self.re_pushButton.setStyleSheet(
             '''
-                QPushButton{image:url(''' + os.path.join(root_path, 'refresh_1.png') + ''');border:0px;}
-                QPushButton:hover{image:url(''' + os.path.join(root_path, 'refresh_2.png') + ''');border:0px;}
+                QPushButton{image:url(''' + os.path.join(root_path, 'refresh_1.png').replace("\\", "/") + ''');border:0px;}
+                QPushButton:hover{image:url(''' + os.path.join(root_path, 'refresh_2.png').replace("\\", "/") + ''');border:0px;}
             ''')
 
     def refresh_NumClicked(self):

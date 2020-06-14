@@ -1,4 +1,4 @@
-import sys
+import sys, os
 import HIDE_main
 import requests
 import Login, Passwd
@@ -21,19 +21,19 @@ class MainDialog(QDialog, login_ui.Ui_Dialog):
 
         root_path = getattr(sys, '_MEIPASS')
         print('root_path: ', root_path)
-        
-        self.widget.setStyleSheet('image:url(../image/login.png);border:0px;')
+
+        self.widget.setStyleSheet('image:url(' + os.path.join(root_path, 'login.png').replace("\\", "/") + ');border:0px;')
         self.pushButton.setStyleSheet(
             '''
-                QPushButton{image:url(../image/ok1.png);border:0px;}
+                QPushButton{image:url(''' + os.path.join(root_path, 'ok1.png').replace("\\", "/") + ''');border:0px;}
             ''')
         self.pw2_pushButton.setStyleSheet(
             '''
-                QPushButton{image:url(../image/ok2.png);border:0px;}
+                QPushButton{image:url(''' + os.path.join(root_path, 'ok2.png').replace("\\", "/") + ''');border:0px;}
             ''')
         self.pw2set_pushButton.setStyleSheet(
             '''
-                QPushButton{image:url(../image/pwset.png);border:0px;}
+                QPushButton{image:url(''' + os.path.join(root_path, 'pwset.png').replace("\\", "/") + ''');border:0px;}
             ''')
 
         self.pushButton.clicked.connect(self.login_NumClicked)

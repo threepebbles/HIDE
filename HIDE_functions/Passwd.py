@@ -37,6 +37,7 @@ def _get_program_pw():
         return False
 
 
+# chk pw
 def cmp_program_pw(password):
     stored = _get_program_pw()
     if not _get_program_pw: return False
@@ -45,6 +46,7 @@ def cmp_program_pw(password):
     else: return False
 
 
+# set pw
 def set_program_pw(password):
     try:
         fp = os.path.join(_directory, _pwfile)

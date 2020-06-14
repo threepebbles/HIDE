@@ -1,13 +1,6 @@
 # coding=<utf-8>
 
-# pycryptodomex 설치 필요
-# pip install pycryptodomex
-
 """
-파일 암복호화에 사용하는 키를 생성하는 과정은 make_pass()에서 실시
-H(key + path)
-
-sha256
 aes256-cbc
 """
 
@@ -66,6 +59,7 @@ def encrypt_file(key, input_file, chunksize=65536):
         return False
 
 
+# key generator
 def make_pass(path, key):
     tmp = key + path
     return hashlib.sha256(tmp.encode()).digest()

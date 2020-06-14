@@ -5,6 +5,7 @@ import time, threading, sys, os
 import Login
 
 
+# check network state
 def check_net():
     while True:
         try:

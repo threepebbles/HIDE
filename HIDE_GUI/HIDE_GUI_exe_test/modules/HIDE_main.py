@@ -205,23 +205,31 @@ class HideDialog(QDialog, hide_ui.Ui_Dialog):
 
         if('nu' in globals() and 'file_selected' in globals()):
             if(file_selected==True):
-                if(os.path.isfile(nu)):
+                if(StateManagement.get_state(nu)):
                     delmsg = QMessageBox()
-                    delmsg.setText("　　Delete File Path!　　　")
-                    delmsg.setWindowTitle("DELETE FILE PATH")
-                    delmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
-                    delmsg.exec_()
-                    # list delete
-                    self.removeItemRow = self.listWidget_1.currentRow()
-                    self.listWidget_1.takeItem(self.removeItemRow)
-                    StateManagement.delete(nu)
-                else:
-                    delmsg = QMessageBox()
-                    delmsg.setText("　　Please select \"file\"!　　　")
+                    delmsg.setText("　　Decrypt before delete!　　　")
                     delmsg.setWindowTitle("Error")
                     delmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
                     delmsg.exec_()
-                    print('Please, select a \"file\"')
+                    print('Decrypt before delete')
+                else:
+                    if(os.path.isfile(nu)):
+                        delmsg = QMessageBox()
+                        delmsg.setText("　　Delete File Path!　　　")
+                        delmsg.setWindowTitle("DELETE FILE PATH")
+                        delmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
+                        delmsg.exec_()
+                        # list delete
+                        self.removeItemRow = self.listWidget_1.currentRow()
+                        self.listWidget_1.takeItem(self.removeItemRow)
+                        StateManagement.delete(nu)
+                    else:
+                        delmsg = QMessageBox()
+                        delmsg.setText("　　Please select \"file\"!　　　")
+                        delmsg.setWindowTitle("Error")
+                        delmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
+                        delmsg.exec_()
+                        print('Please, select a \"file\"')
             else:
                 delmsg = QMessageBox()
                 delmsg.setText("　　There is no selected file!　　　")
@@ -244,23 +252,31 @@ class HideDialog(QDialog, hide_ui.Ui_Dialog):
 
         if('nu' in globals() and 'file_selected' in globals()):
             if(file_selected==True):
-                if(os.path.isdir(nu)):
+                if(StateManagement.get_state(nu)):
                     del2msg = QMessageBox()
-                    del2msg.setText("　　Delete Folder Path!　　　")
-                    del2msg.setWindowTitle("DELETE FOLDER PATH")
-                    del2msg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
-                    del2msg.exec_()
-                    # list delete
-                    self.removeItemRow = self.listWidget_2.currentRow()
-                    self.listWidget_2.takeItem(self.removeItemRow)
-                    StateManagement.delete(nu)
-                else:
-                    del2msg = QMessageBox()
-                    del2msg.setText("　　Please select \"folder\"!　　　")
+                    del2msg.setText("　　Decrypt before delete!　　　")
                     del2msg.setWindowTitle("Error")
                     del2msg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
                     del2msg.exec_()
-                    print('Please, select a \"folder\"')
+                    print('Decrypt before delete')
+                else:
+                    if(os.path.isdir(nu)):
+                        del2msg = QMessageBox()
+                        del2msg.setText("　　Delete Folder Path!　　　")
+                        del2msg.setWindowTitle("DELETE FOLDER PATH")
+                        del2msg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
+                        del2msg.exec_()
+                        # list delete
+                        self.removeItemRow = self.listWidget_2.currentRow()
+                        self.listWidget_2.takeItem(self.removeItemRow)
+                        StateManagement.delete(nu)
+                    else:
+                        del2msg = QMessageBox()
+                        del2msg.setText("　　Please select \"folder\"!　　　")
+                        del2msg.setWindowTitle("Error")
+                        del2msg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
+                        del2msg.exec_()
+                        print('Please, select a \"folder\"')
             else:
                 del2msg = QMessageBox()
                 del2msg.setText("　　There is no selected file!　　　")

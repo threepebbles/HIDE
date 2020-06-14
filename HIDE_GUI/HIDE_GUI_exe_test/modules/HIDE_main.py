@@ -12,6 +12,7 @@ from PyQt5.QtWidgets import *
 # from PyQt5 import uic
 import os
 import hide_ui
+import StateManagement
 
 colors = ['#f8cc00', '#ffffff']
 
@@ -105,23 +106,32 @@ class HideDialog(QDialog, hide_ui.Ui_Dialog):
 
         if('nu' in globals() and 'file_selected' in globals()):
             if(file_selected==True):
-                #hide on
-                if(stealth.do_stealth(nu)==False):
+                if(StateManagement.get_state(nu)):
                     onmsg = QMessageBox()
-                    onmsg.setText("　　Fails!　　　")
+                    onmsg.setText("　　Already encrypted!　　　")
                     onmsg.setWindowTitle("Error")
                     onmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
                     onmsg.exec_()
-                    se.setBackground(QColor(colors[1])) # hide off
-                    print('Failed to hide on')
+                    print('Already encrypted')
+                    return
                 else:
-                    onmsg = QMessageBox()
-                    onmsg.setText("　　Success!　　　")
-                    onmsg.setWindowTitle("HIDE ON")
-                    onmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
-                    onmsg.exec_()
-                    se.setBackground(QColor(colors[0])) # hide on
-                    print('Success to hide on') 
+                    #hide on
+                    if(stealth.do_stealth(nu)==False):
+                        onmsg = QMessageBox()
+                        onmsg.setText("　　Fails!　　　")
+                        onmsg.setWindowTitle("Error")
+                        onmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
+                        onmsg.exec_()
+                        se.setBackground(QColor(colors[1])) # hide off
+                        print('Failed to hide on')
+                    else:
+                        onmsg = QMessageBox()
+                        onmsg.setText("　　Success!　　　")
+                        onmsg.setWindowTitle("HIDE ON")
+                        onmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
+                        onmsg.exec_()
+                        se.setBackground(QColor(colors[0])) # hide on
+                        print('Success to hide on') 
             else:
                 onmsg = QMessageBox()
                 onmsg.setText("　　There is no selected file!　　　")
@@ -129,6 +139,8 @@ class HideDialog(QDialog, hide_ui.Ui_Dialog):
                 onmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
                 onmsg.exec_()
                 print('Please, select a file')
+        
+            file_selected = False
         else:
             onmsg = QMessageBox()
             onmsg.setText("　　There is no selected file!　　　")
@@ -137,9 +149,7 @@ class HideDialog(QDialog, hide_ui.Ui_Dialog):
             onmsg.exec_()
             print('Please, select a file')
         
-        if('file_selected' in globals()):
-            file_selected = False
-
+        
 
     def unlock_NumClicked(self):
         global nu, se, file_selected
@@ -147,23 +157,32 @@ class HideDialog(QDialog, hide_ui.Ui_Dialog):
         if('nu' in globals() and 'file_selected' in globals()):
             if(file_selected==True):
                 #hide off
-                if(stealth.un_stealth(nu)==False):
+                if(StateManagement.get_state(nu)==False):
                     offmsg = QMessageBox()
-                    offmsg.setText("　　Fails!　　　")
+                    offmsg.setText("　　Already decrypted!　　　")
                     offmsg.setWindowTitle("Error")
                     offmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
                     offmsg.exec_()
-                    se.setBackground(QColor(colors[0]))
-                    print('Failed to hide off')
+                    print('Already decrypted')
+                    return
                 else:
-                    print('unhide')
-                    offmsg = QMessageBox()
-                    offmsg.setText("　　Success!　　　")
-                    offmsg.setWindowTitle("HIDE OFF")
-                    offmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
-                    offmsg.exec_()
-                    se.setBackground(QColor(colors[1]))
-                    print('Success to hide off') 
+                    if(stealth.un_stealth(nu)==False):
+                        offmsg = QMessageBox()
+                        offmsg.setText("　　Fails!　　　")
+                        offmsg.setWindowTitle("Error")
+                        offmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
+                        offmsg.exec_()
+                        se.setBackground(QColor(colors[0]))
+                        print('Failed to hide off')
+                    else:
+                        print('unhide')
+                        offmsg = QMessageBox()
+                        offmsg.setText("　　Success!　　　")
+                        offmsg.setWindowTitle("HIDE OFF")
+                        offmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
+                        offmsg.exec_()
+                        se.setBackground(QColor(colors[1]))
+                        print('Success to hide off') 
             else:
                 offmsg = QMessageBox()
                 offmsg.setText("　　There is no selected file!　　　")
@@ -171,6 +190,8 @@ class HideDialog(QDialog, hide_ui.Ui_Dialog):
                 offmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
                 offmsg.exec_()
                 print('Please, select a file')
+
+            file_selected = False
         else:
             offmsg = QMessageBox()
             offmsg.setText("　　There is no selected file!　　　")
@@ -178,9 +199,6 @@ class HideDialog(QDialog, hide_ui.Ui_Dialog):
             offmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
             offmsg.exec_()
             print('Please, select a file')
-
-        if('file_selected' in globals()):
-            file_selected = False
 
     def delete_NumClicked(self):
         global nu, file_selected
@@ -203,6 +221,8 @@ class HideDialog(QDialog, hide_ui.Ui_Dialog):
                 delmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
                 delmsg.exec_()
                 print('Please, select a file')    
+
+            file_selected = False
         else:
             delmsg = QMessageBox()
             delmsg.setText("　　There is no selected files!　　　")
@@ -210,9 +230,6 @@ class HideDialog(QDialog, hide_ui.Ui_Dialog):
             delmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
             delmsg.exec_()
             print('Please, select a file')
-
-        if('file_selected' in globals()):
-            file_selected = False
 
     def delete_NumClicked_2(self):
         global nu, file_selected

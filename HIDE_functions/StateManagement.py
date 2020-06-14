@@ -7,6 +7,7 @@ import hashlib, os
 _LINK_DIRECTORY = os.path.abspath(os.path.join(os.path.join('C:/Users/' + os.getenv('USERNAME')), 'Links/link.{59031a47-3f72-44a7-89c5-5595fe6b30ee}'))
 
 
+# get path name of target list
 def get_path_of_hiddenlist():
     if not os.path.isdir(os.path.abspath(os.path.join(os.path.join('C:/Users/' + os.getenv('USERNAME')), 'Links/link.{59031a47-3f72-44a7-89c5-5595fe6b30ee}'))):
         os.mkdir(os.path.abspath(os.path.join(os.path.join('C:/Users/' + os.getenv('USERNAME')), 'Links/link.{59031a47-3f72-44a7-89c5-5595fe6b30ee}')))
@@ -18,11 +19,13 @@ def get_path_of_hiddenlist():
     return f
 
 
+# get hashname
 def hashname(path):
     h = hashlib.sha256('{}HIDEENTRY'.format(os.path.abspath(path)).encode()).hexdigest()
     return h
 
 
+# get target state
 def get_state(path):
     f = os.path.abspath(os.path.join(_LINK_DIRECTORY, hashname(path)))
     state = False
@@ -31,7 +34,9 @@ def get_state(path):
     return True if state == 'ON' else False
 
 
-def chk_overlap(path): # 중복이면 True return
+# check overlap register
+def chk_overlap(path): 
+    # 중복이면 True
     f = get_path_of_hiddenlist()
     o = open(f, 'r')
     while True:
@@ -44,6 +49,7 @@ def chk_overlap(path): # 중복이면 True return
             return True
 
 
+# register file or folder to target list
 def register(path, file=False):
     path = os.path.abspath(path)
     f = get_path_of_hiddenlist()
@@ -56,6 +62,7 @@ def register(path, file=False):
     return recover_state(path)
 
 
+# delete file or folder to target list
 def delete(path):
     try:
         path = os.path.abspath(path)
@@ -79,6 +86,7 @@ def delete(path):
         return False
 
 
+# change target to hidden state
 def stealth_state(path):
     try:
         f = os.path.join(_LINK_DIRECTORY, hashname(path))
@@ -89,6 +97,7 @@ def stealth_state(path):
         return False
 
 
+# change target to recover state
 def recover_state(path):
     try:
         f = os.path.join(_LINK_DIRECTORY, hashname(path))

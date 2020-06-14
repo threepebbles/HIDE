@@ -21,7 +21,7 @@ class Ui_Dialog(object):
         self.widget_3 = QtWidgets.QWidget(Dialog)
         self.widget_3.setGeometry(QtCore.QRect(-30, -6, 801, 561))
         self.widget_3.setMinimumSize(QtCore.QSize(300, 500))
-        self.widget_3.setStyleSheet("")
+        
         self.widget_3.setObjectName("widget_3")
         self.layoutWidget = QtWidgets.QWidget(Dialog)
         self.layoutWidget.setGeometry(QtCore.QRect(630, 60, 102, 316))
@@ -33,21 +33,21 @@ class Ui_Dialog(object):
         self.lock_pushButton.setMinimumSize(QtCore.QSize(100, 100))
         self.lock_pushButton.setMaximumSize(QtCore.QSize(100, 100))
         self.lock_pushButton.setLayoutDirection(QtCore.Qt.LeftToRight)
-        self.lock_pushButton.setStyleSheet("background-color: rgb(255, 255, 255);")
+        
         self.lock_pushButton.setText("")
         self.lock_pushButton.setObjectName("lock_pushButton")
         self.verticalLayout.addWidget(self.lock_pushButton)
         self.unlock_pushButton = QtWidgets.QPushButton(self.layoutWidget)
         self.unlock_pushButton.setMinimumSize(QtCore.QSize(100, 100))
         self.unlock_pushButton.setMaximumSize(QtCore.QSize(100, 100))
-        self.unlock_pushButton.setStyleSheet("background-color: rgb(255, 255, 255);")
+        
         self.unlock_pushButton.setText("")
         self.unlock_pushButton.setObjectName("unlock_pushButton")
         self.verticalLayout.addWidget(self.unlock_pushButton)
         self.quit_pushButton = QtWidgets.QPushButton(self.layoutWidget)
         self.quit_pushButton.setMinimumSize(QtCore.QSize(100, 100))
         self.quit_pushButton.setMaximumSize(QtCore.QSize(100, 100))
-        self.quit_pushButton.setStyleSheet("background-color: rgb(255, 255, 255);")
+        
         self.quit_pushButton.setText("")
         self.quit_pushButton.setObjectName("quit_pushButton")
         self.verticalLayout.addWidget(self.quit_pushButton)
@@ -59,7 +59,7 @@ class Ui_Dialog(object):
         self.Folder_widget.setGeometry(QtCore.QRect(10, 119, 300, 421))
         self.Folder_widget.setMinimumSize(QtCore.QSize(300, 400))
         self.Folder_widget.setMaximumSize(QtCore.QSize(16777215, 16777215))
-        self.Folder_widget.setStyleSheet("")
+        
         self.Folder_widget.setObjectName("Folder_widget")
         self.Folder_pushButton = QtWidgets.QPushButton(Dialog)
         self.Folder_pushButton.setGeometry(QtCore.QRect(320, 60, 231, 51))
@@ -67,7 +67,7 @@ class Ui_Dialog(object):
         self.Folder_pushButton.setObjectName("Folder_pushButton")
         self.listWidget_2 = QtWidgets.QListWidget(Dialog)
         self.listWidget_2.setGeometry(QtCore.QRect(330, 180, 281, 351))
-        self.listWidget_2.setStyleSheet("")
+        
         self.listWidget_2.setObjectName("listWidget_2")
         self.widget_2 = QtWidgets.QWidget(Dialog)
         self.widget_2.setGeometry(QtCore.QRect(319, 119, 301, 421))
@@ -108,6 +108,56 @@ class Ui_Dialog(object):
         self.logout_pushButton.raise_()
         self.login_pushButton.raise_()
         self.re_pushButton.raise_()
+
+        self.widget_3.setStyleSheet('image:url(../image/background.png);border:0px;')
+        self.widget_2.setStyleSheet('image:url(../image/path.png);border:0px;')
+        self.Folder_widget.setStyleSheet('image:url(../image/filelist.png);border:0px;')
+
+        self.lock_pushButton.setStyleSheet(
+        '''
+            QPushButton{image:url(../image/lock.png);border:0px;}
+            QPushButton:hover{image:url(../image/lock_c.png);border:0px;}
+        ''')
+        self.unlock_pushButton.setStyleSheet(
+        '''
+            QPushButton{image:url(../image/unlock.png);border:0px;}
+            QPushButton:hover{image:url(../image/unlock_c.png);border:0px;}
+        ''')
+        self.quit_pushButton.setStyleSheet(
+        '''
+            QPushButton{image:url(../image/quit.png);border:0px;}
+            QPushButton:hover{image:url(../image/quit_c.png);border:0px;}
+        ''')
+
+        self.Select_pushButton.setStyleSheet(
+            '''
+                QPushButton{image:url(../image/select_b.png);border:0px;}
+            ''')
+        self.Folder_pushButton.setStyleSheet(
+            '''
+                QPushButton{image:url(../image/view_b.png);border:0px;}
+            ''')
+        self.Delete_pushButton.setStyleSheet(
+            '''
+                QPushButton{image:url(../image/trash.png);border:0px;}
+            ''')
+        self.Delete_pushButton_2.setStyleSheet(
+            '''
+                QPushButton{image:url(../image/trash.png);border:0px;}
+            ''')
+        self.logout_pushButton.setStyleSheet(
+            '''
+                QPushButton{image:url(../image/logout_bt.png);border:0px;}
+            ''')
+        self.login_pushButton.setStyleSheet(
+            '''
+                QPushButton{image:url(../image/login_bt.png);border:0px;}
+            ''')
+        self.re_pushButton.setStyleSheet(
+            '''
+                QPushButton{image:url(../image/refresh_1.png);border:0px;}
+                QPushButton:hover{image:url(../image/refresh_2.png);border:0px;}
+            ''')
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)

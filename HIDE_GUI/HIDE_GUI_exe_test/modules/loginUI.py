@@ -19,18 +19,21 @@ class MainDialog(QDialog, login_ui.Ui_Dialog):
         self.setupUi(self)
         self.setWindowTitle("WELCOME TO HIDE")
 
-        self.widget.setStyleSheet('image:url(./_MEIPASS/login.png);border:0px;')
+        root_path = getattr(sys, '_MEIPASS')
+        print('_MEIPASS:', root_path)
+
+        self.widget.setStyleSheet('image:url(' + root_path '/login.png);border:0px;')
         self.pushButton.setStyleSheet(
             '''
-                QPushButton{image:url(./_MEIPASS/ok1.png);border:0px;}
+                QPushButton{image:url(''' + root_path + '''/ok1.png);border:0px;}
             ''')
         self.pw2_pushButton.setStyleSheet(
             '''
-                QPushButton{image:url(./_MEIPASS/ok2.png);border:0px;}
+                QPushButton{image:url(''' + root_path + '''/ok2.png);border:0px;}
             ''')
         self.pw2set_pushButton.setStyleSheet(
             '''
-                QPushButton{image:url(./_MEIPASS/pwset.png);border:0px;}
+                QPushButton{image:url(''' + root_path + '''/pwset.png);border:0px;}
             ''')
 
         self.pushButton.clicked.connect(self.login_NumClicked)

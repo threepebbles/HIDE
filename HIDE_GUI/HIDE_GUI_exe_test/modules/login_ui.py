@@ -72,7 +72,7 @@ class Ui_Dialog(object):
         self.pw2set_pushButton.raise_()
 
         root_path = getattr(sys, '_MEIPASS')
-        print('root_path: ', root_path)
+        # print('root_path: ', root_path)
 
         self.widget.setStyleSheet('image:url(' + os.path.join(root_path, 'login.png').replace("\\", "/") + ');border:0px;')
         self.pushButton.setStyleSheet(

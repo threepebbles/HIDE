@@ -110,7 +110,7 @@ class Ui_Dialog(object):
         self.re_pushButton.raise_()
 
         root_path = getattr(sys, '_MEIPASS')
-        print('root_path: ', root_path)
+        # print('root_path: ', root_path)
 
         self.widget_3.setStyleSheet('image:url(' + os.path.join(root_path, 'background.png').replace("\\", "/") +');border:0px;')
         self.widget_2.setStyleSheet('image:url(' + os.path.join(root_path, 'path.png').replace("\\", "/") + ');border:0px;')

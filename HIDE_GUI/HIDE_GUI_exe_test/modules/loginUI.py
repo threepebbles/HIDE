@@ -79,15 +79,16 @@ class MainDialog(QDialog, login_ui.Ui_Dialog):
             self.pwd_lineEdit.clear()
 
     def pw2set_NumClicked(self):
-        print('pwd set')
-
         offpwd = self.pwd_lineEdit.text()  # pwd 저장
-        if len(offpwd) == 0:
-            QMessageBox.about(self, "OFFLINE PASSWD SET", "FAIL")
+        if len(offpwd) < 4:
+            QMessageBox.about(self, "OFFLINE PASSWD SET", "Input more than 4 letters")
+            print('pwd set fail')
         elif Passwd.chk_set_before():
             QMessageBox.about(self, "OFFLINE PASSWD SET", "ALREADY SET")
+            print('pwd already exists')
         else:
             Passwd.set_program_pw(offpwd)
+            print('pwd set success')
 
 
 app = QApplication(sys.argv)

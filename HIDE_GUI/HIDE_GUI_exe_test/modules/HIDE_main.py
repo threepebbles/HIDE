@@ -101,26 +101,150 @@ class HideDialog(QDialog, hide_ui.Ui_Dialog):
         self.originlist()
 
     def lock_NumClicked(self):
-        #hide on
-        print('hide')
-        onmsg = QMessageBox()
-        onmsg.setText("　　Hide On!　　　")
-        onmsg.setWindowTitle("HIDE ON")
-        onmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
-        onmsg.exec_()
-        stealth.do_stealth(nu)
-        se.setBackground(QColor(colors[0])) #색으로 on/off 구별
+        global nu, se, file_selected
+
+        if('nu' in globals() and 'file_selected' in globals()):
+            if(file_selected==True):
+                #hide on
+                if(stealth.do_stealth(nu)==False):
+                    onmsg = QMessageBox()
+                    onmsg.setText("　　Hide Fails!　　　")
+                    onmsg.setWindowTitle("Error")
+                    onmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
+                    onmsg.exec_()
+                    se.setBackground(QColor(colors[2]))
+                    print('Failed to hide')
+                else:
+                    onmsg = QMessageBox()
+                    onmsg.setText("　　Hide On!　　　")
+                    onmsg.setWindowTitle("HIDE ON")
+                    onmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
+                    onmsg.exec_()
+                    se.setBackground(QColor(colors[0])) #색으로 on/off 구별   
+                    print('Success to hide on') 
+            else:
+                onmsg = QMessageBox()
+                onmsg.setText("　　There is no selected file!　　　")
+                onmsg.setWindowTitle("Error")
+                onmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
+                onmsg.exec_()
+                print('Please, select file')
+        else:
+            onmsg = QMessageBox()
+            onmsg.setText("　　There is no selected file!　　　")
+            onmsg.setWindowTitle("Error")
+            onmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
+            onmsg.exec_()
+            print('Please, select file')
+        
+        if('file_selected' in globals()):
+            file_selected = False
+
 
     def unlock_NumClicked(self):
-        #hide off
-        print('unhide')
-        offmsg = QMessageBox()
-        offmsg.setText("　　Hide Off!　　　")
-        offmsg.setWindowTitle("HIDE OFF")
-        offmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
-        offmsg.exec_()
-        stealth.do_stealth(nu)
-        se.setBackground(QColor(colors[2]))
+        global nu, se, file_selected
+
+        if('nu' in globals() and 'file_selected' in globals()):
+            if(file_selected==True):
+                #hide on
+                if(stealth.un_stealth(nu)==False):
+                    offmsg = QMessageBox()
+                    offmsg.setText("　　Hide Fails!　　　")
+                    offmsg.setWindowTitle("Error")
+                    offmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
+                    offmsg.exec_()
+                    se.setBackground(QColor(colors[2]))
+                    print('Failed to hide')
+                else:
+                    print('unhide')
+                    offmsg = QMessageBox()
+                    offmsg.setText("　　Hide Off!　　　")
+                    offmsg.setWindowTitle("HIDE OFF")
+                    offmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
+                    offmsg.exec_()
+                    se.setBackground(QColor(colors[2]))
+                    print('Success to hide off') 
+            else:
+                offmsg = QMessageBox()
+                offmsg.setText("　　There is no selected file!　　　")
+                offmsg.setWindowTitle("Error")
+                offmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
+                offmsg.exec_()
+                print('Please, select file')
+        else:
+            offmsg = QMessageBox()
+            offmsg.setText("　　There is no selected file!　　　")
+            offmsg.setWindowTitle("Error")
+            offmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
+            offmsg.exec_()
+            print('Please, select file')
+
+        if('file_selected' in globals()):
+            file_selected = False
+
+    def delete_NumClicked(self):
+        global nu, file_selected
+
+        if('nu' in globals() and 'file_selected' in globals()):
+            if(file_selected==True):
+                delmsg = QMessageBox()
+                delmsg.setText("　　Delete File Path!　　　")
+                delmsg.setWindowTitle("DELETE FILE PATH")
+                delmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
+                delmsg.exec_()
+                # list delete
+                self.removeItemRow = self.listWidget_1.currentRow()
+                self.listWidget_1.takeItem(self.removeItemRow)
+                StateManagement.delete(nu)
+            else:
+                delmsg = QMessageBox()
+                delmsg.setText("　　There is no selected files!　　　")
+                delmsg.setWindowTitle("Error")
+                delmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
+                delmsg.exec_()
+                print('Please, select file')    
+        else:
+            delmsg = QMessageBox()
+            delmsg.setText("　　There is no selected files!　　　")
+            delmsg.setWindowTitle("Error")
+            delmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
+            delmsg.exec_()
+            print('Please, select file')
+
+        if('file_selected' in globals()):
+            file_selected = False
+
+    def delete_NumClicked_2(self):
+        global nu, file_selected
+
+        if('nu' in globals() and 'file_selected' in globals()):
+            if(file_selected==True):
+                del2msg = QMessageBox()
+                del2msg.setText("　　Delete Folder Path!　　　")
+                del2msg.setWindowTitle("DELETE FOLDER PATH")
+                del2msg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
+                del2msg.exec_()
+                # list delete
+                self.removeItemRow = self.listWidget_2.currentRow()
+                self.listWidget_2.takeItem(self.removeItemRow)
+                StateManagement.delete(nu)
+            else:
+                del2msg = QMessageBox()
+                del2msg.setText("　　There is no selected files!　　　")
+                del2msg.setWindowTitle("Error")
+                del2msg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
+                del2msg.exec_()
+                print('Please, select file')
+        else:
+            del2msg = QMessageBox()
+            del2msg.setText("　　There is no selected files!　　　")
+            del2msg.setWindowTitle("Error")
+            del2msg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
+            del2msg.exec_()
+            print('Please, select file')
+
+        if('file_selected' in globals()):
+            file_selected = False
 
     def quit_NumClicked(self):
         #quit
@@ -151,7 +275,7 @@ class HideDialog(QDialog, hide_ui.Ui_Dialog):
 
     def folder_NumClicked(self):
         fname = QFileDialog.getExistingDirectory(self)
-        if fname[0] == '':
+        if fname == '':
             return
         item = QListWidgetItem(fname)
 
@@ -165,38 +289,18 @@ class HideDialog(QDialog, hide_ui.Ui_Dialog):
             dumsg.exec_()
 
     def insertListWidget(self):
-        global nu, se
+        global nu, se, file_selected
+        file_selected = True
         print(self.listWidget_1.currentItem().text())
         nu = self.listWidget_1.currentItem().text()
         se = self.listWidget_1.currentItem()
 
     def insertListWidget2(self):
-        global nu, se
+        global nu, se, file_selected
+        file_selected = True
         print(self.listWidget_2.currentItem().text())
         nu = self.listWidget_2.currentItem().text()
         se = self.listWidget_2.currentItem()
-
-    def delete_NumClicked(self):
-        delmsg = QMessageBox()
-        delmsg.setText("　　Delete File Path!　　　")
-        delmsg.setWindowTitle("DELETE FILE PATH")
-        delmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
-        delmsg.exec_()
-        # list delete
-        self.removeItemRow = self.listWidget_1.currentRow()
-        self.listWidget_1.takeItem(self.removeItemRow)
-        StateManagement.delete(nu)
-
-    def delete_NumClicked_2(self):
-        del2msg = QMessageBox()
-        del2msg.setText("　　Delete Folder Path!　　　")
-        del2msg.setWindowTitle("DELETE FOLDER PATH")
-        del2msg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
-        del2msg.exec_()
-        # list delete
-        self.removeItemRow = self.listWidget_2.currentRow()
-        self.listWidget_2.takeItem(self.removeItemRow)
-        StateManagement.delete(nu)
 
     def logout_NumClicked(self):
         #online 상태일 때만 사용

@@ -13,7 +13,7 @@ from PyQt5.QtWidgets import *
 import os
 import hide_ui
 
-colors = ['#f8cc00', '#f7f7f7', '#ffffff']
+colors = ['#f8cc00', '#ffffff']
 
 # CalUI = '../_uiFiles/hide.ui'
 
@@ -112,7 +112,7 @@ class HideDialog(QDialog, hide_ui.Ui_Dialog):
                     onmsg.setWindowTitle("Error")
                     onmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
                     onmsg.exec_()
-                    se.setBackground(QColor(colors[2]))
+                    se.setBackground(QColor(colors[1])) # hide off
                     print('Failed to hide')
                 else:
                     onmsg = QMessageBox()
@@ -120,7 +120,7 @@ class HideDialog(QDialog, hide_ui.Ui_Dialog):
                     onmsg.setWindowTitle("HIDE ON")
                     onmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
                     onmsg.exec_()
-                    se.setBackground(QColor(colors[0])) #색으로 on/off 구별   
+                    se.setBackground(QColor(colors[0])) # hide on
                     print('Success to hide on') 
             else:
                 onmsg = QMessageBox()
@@ -146,14 +146,14 @@ class HideDialog(QDialog, hide_ui.Ui_Dialog):
 
         if('nu' in globals() and 'file_selected' in globals()):
             if(file_selected==True):
-                #hide on
+                #hide off
                 if(stealth.un_stealth(nu)==False):
                     offmsg = QMessageBox()
                     offmsg.setText("　　Hide Fails!　　　")
                     offmsg.setWindowTitle("Error")
                     offmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
                     offmsg.exec_()
-                    se.setBackground(QColor(colors[2]))
+                    se.setBackground(QColor(colors[0]))
                     print('Failed to hide')
                 else:
                     print('unhide')
@@ -162,7 +162,7 @@ class HideDialog(QDialog, hide_ui.Ui_Dialog):
                     offmsg.setWindowTitle("HIDE OFF")
                     offmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
                     offmsg.exec_()
-                    se.setBackground(QColor(colors[2]))
+                    se.setBackground(QColor(colors[1]))
                     print('Success to hide off') 
             else:
                 offmsg = QMessageBox()
@@ -343,14 +343,14 @@ class HideDialog(QDialog, hide_ui.Ui_Dialog):
                 if StateManagement.get_state(t.rstrip().split('?')[1]) == True:
                     item.setBackground(QColor(colors[0]))
                 else :
-                    item.setBackground(QColor(colors[2]))
+                    item.setBackground(QColor(colors[1]))
                 self.listWidget_1.addItem(item)
             if t.rstrip().split('?')[0] == 'folder':
                 item = QListWidgetItem(t.rstrip().split('?')[1])
                 if StateManagement.get_state(t.rstrip().split('?')[1]) == True:
                     item.setBackground(QColor(colors[0]))
                 else :
-                    item.setBackground(QColor(colors[2]))
+                    item.setBackground(QColor(colors[1]))
                 self.listWidget_2.addItem(item)
 
 

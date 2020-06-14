@@ -90,47 +90,74 @@ class HideDialog(QDialog):
                 QPushButton:hover{image:url(../image/refresh_2.png);border:0px;}
             ''')
 
+    def refresh_NumClicked(self):
+        self.listWidget_2.clear()
+        self.listWidget_1.clear()
+        self.originlist()
 
     def lock_NumClicked(self):
         #hide on
         print('hide')
-        passwd.main_dialog.show()
-        #passwd.main_dialog.close()
-        QMessageBox.about(self, "HIDE ON", "HIDE ON")
-        stealth.do_stealth(nu, "111")
+        onmsg = QMessageBox()
+        onmsg.setText("　　Hide On!　　　")
+        onmsg.setWindowTitle("HIDE ON")
+        onmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
+        onmsg.exec_()
+        stealth.do_stealth(nu)
         se.setBackground(QColor(colors[0])) #색으로 on/off 구별
 
     def unlock_NumClicked(self):
         #hide off
         print('unhide')
-        QMessageBox.about(self, "HIDE OFF", "HIDE OFF")
-        stealth.un_stealth(nu, "111") #lock에 따라서, false일 때 기능 실패
+        offmsg = QMessageBox()
+        offmsg.setText("　　Hide Off!　　　")
+        offmsg.setWindowTitle("HIDE OFF")
+        offmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
+        offmsg.exec_()
+        stealth.do_stealth(nu)
         se.setBackground(QColor(colors[2]))
 
     def quit_NumClicked(self):
         #quit
         print('quit')
-        QMessageBox.about(self, "Quit", "Quit")
+        quimsg = QMessageBox()
+        quimsg.setText("　　Quit!　　　")
+        quimsg.setWindowTitle("QUIT")
+        quimsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
+        quimsg.exec_()
         QCoreApplication.instance().quit()
 
     def select_NumClicked(self):
         fname = QFileDialog.getOpenFileName(self)
+        if fname[0] == '':
+            return
+
         global item
         item = QListWidgetItem(fname[0])
 
         if StateManagement.register(fname[0], True):
             self.listWidget_1.addItem(fname[0])
         else:
-            QMessageBox.about(self, "Duplicate", "Duplicate")
+            dumsg = QMessageBox()
+            dumsg.setText("　　Duplicate!　　　")
+            dumsg.setWindowTitle("DUPLICATE")
+            dumsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
+            dumsg.exec_()
 
     def folder_NumClicked(self):
         fname = QFileDialog.getExistingDirectory(self)
+        if fname[0] == '':
+            return
         item = QListWidgetItem(fname)
 
         if StateManagement.register(fname, False):
             self.listWidget_2.addItem(fname)
         else:
-            QMessageBox.about(self, "Duplicate", "Duplicate")
+            dumsg = QMessageBox()
+            dumsg.setText("　　Duplicate!　　　")
+            dumsg.setWindowTitle("DUPLICATE")
+            dumsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
+            dumsg.exec_()
 
     def insertListWidget(self):
         global nu, se
@@ -145,14 +172,22 @@ class HideDialog(QDialog):
         se = self.listWidget_2.currentItem()
 
     def delete_NumClicked(self):
-        QMessageBox.about(self, "DELETE FILE PATH", "   DELETE FILE PATH   ")
+        delmsg = QMessageBox()
+        delmsg.setText("　　Delete File Path!　　　")
+        delmsg.setWindowTitle("DELETE FILE PATH")
+        delmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
+        delmsg.exec_()
         # list delete
         self.removeItemRow = self.listWidget_1.currentRow()
         self.listWidget_1.takeItem(self.removeItemRow)
         StateManagement.delete(nu)
 
     def delete_NumClicked_2(self):
-        QMessageBox.about(self, "DELETE FOLDER PATH", "   DELETE FOLDER PATH   ")
+        del2msg = QMessageBox()
+        del2msg.setText("　　Delete Folder Path!　　　")
+        del2msg.setWindowTitle("DELETE FOLDER PATH")
+        del2msg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
+        del2msg.exec_()
         # list delete
         self.removeItemRow = self.listWidget_2.currentRow()
         self.listWidget_2.takeItem(self.removeItemRow)
@@ -166,20 +201,20 @@ class HideDialog(QDialog):
         logmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
         logmsg.exec_()
 
-        #QMessageBox.about(self, "LOGOUT", "　LOGOUT!　　　　")
+        Login.logout()
         login.main_dialog.show()
         self.close()
 
     def login_NumClicked(self):
         #offline 상태일 때만 사용
-        QMessageBox.about(self, "LOGIN", "　　　　LOGIN!　　　　")
+        logmsg = QMessageBox()
+        logmsg.setText("　　LogIn!　　　")
+        logmsg.setWindowTitle("LOGIN")
+        logmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
+        logmsg.exec_()
+
         login.main_dialog.show()
         self.close()
-
-    def refresh_NumClicked(self):
-        self.listWidget_2.clear()
-        self.listWidget_1.clear()
-        self.originlist()
 
     def originlist(self):
         origin = StateManagement.get_path_of_hiddenlist()

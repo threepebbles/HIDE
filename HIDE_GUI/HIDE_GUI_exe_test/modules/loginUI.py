@@ -81,7 +81,7 @@ class MainDialog(QDialog, login_ui.Ui_Dialog):
     def pw2set_NumClicked(self):
         offpwd = self.pwd_lineEdit.text()  # pwd 저장
         if len(offpwd) < 4:
-            QMessageBox.about(self, "OFFLINE PASSWD SET", "Input more than 4 letters")
+            QMessageBox.about(self, "OFFLINE PASSWD SET", "password must be at least 4 characters")
             print('pwd set fail')
         elif Passwd.chk_set_before():
             QMessageBox.about(self, "OFFLINE PASSWD SET", "ALREADY SET")

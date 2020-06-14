@@ -9,7 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+import sys, os
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -110,56 +110,56 @@ class Ui_Dialog(object):
         self.re_pushButton.raise_()
 
         root_path = getattr(sys, '_MEIPASS')
-        print('_MEIPASS:', root_path)
+        print('root_path: ', root_path)
 
-        self.widget_3.setStyleSheet('image:url(' + root_path '/background.png);border:0px;')
-        self.widget_2.setStyleSheet('image:url(' + root_path '/path.png);border:0px;')
-        self.Folder_widget.setStyleSheet('image:url(' + root_path '/filelist.png);border:0px;')
+        self.widget_3.setStyleSheet('image:url(' + os.path.join(root_path, 'background.png') +');border:0px;')
+        self.widget_2.setStyleSheet('image:url(' + os.path.join(root_path, 'path.png') + ');border:0px;')
+        self.Folder_widget.setStyleSheet('image:url(' + os.path.join(root_path, 'filelist.png') + ');border:0px;')
 
         self.lock_pushButton.setStyleSheet(
         '''
-            QPushButton{image:url(''' + root_path + '''/lock.png);border:0px;}
-            QPushButton:hover{image:url(''' + root_path + '''/lock_c.png);border:0px;}
+            QPushButton{image:url(''' + os.path.join(root_path, 'lock.png') + ''');border:0px;}
+            QPushButton:hover{image:url(''' + os.path.join(root_path, 'lock_c.png') + ''');border:0px;}
         ''')
         self.unlock_pushButton.setStyleSheet(
         '''
-            QPushButton{image:url(''' + root_path + '''/unlock.png);border:0px;}
-            QPushButton:hover{image:url(''' + root_path + '''/unlock_c.png);border:0px;}
+            QPushButton{image:url(''' + os.path.join(root_path, 'unlock.png') + ''');border:0px;}
+            QPushButton:hover{image:url(''' + os.path.join(root_path, 'lock_c.png') + ''');border:0px;}
         ''')
         self.quit_pushButton.setStyleSheet(
         '''
-            QPushButton{image:url(''' + root_path + '''/quit.png);border:0px;}
-            QPushButton:hover{image:url(''' + root_path + '''/quit_c.png);border:0px;}
+            QPushButton{image:url(''' + os.path.join(root_path, 'quit.png') + ''');border:0px;}
+            QPushButton:hover{image:url(''' + os.path.join(root_path, 'quit_c.png') + ''');border:0px;}
         ''')
 
         self.Select_pushButton.setStyleSheet(
             '''
-                QPushButton{image:url(''' + root_path + '''/select_b.png);border:0px;}
+                QPushButton{image:url(''' + os.path.join(root_path, 'select_b.png') + ''');border:0px;}
             ''')
         self.Folder_pushButton.setStyleSheet(
             '''
-                QPushButton{image:url(''' + root_path + '''/view_b.png);border:0px;}
+                QPushButton{image:url(''' + os.path.join(root_path, 'view_b.png') + ''');border:0px;}
             ''')
         self.Delete_pushButton.setStyleSheet(
             '''
-                QPushButton{image:url(''' + root_path + '''/trash.png);border:0px;}
+                QPushButton{image:url(''' + os.path.join(root_path, 'trash.png') + ''');border:0px;}
             ''')
         self.Delete_pushButton_2.setStyleSheet(
             '''
-                QPushButton{image:url(''' + root_path + '''/trash.png);border:0px;}
+                QPushButton{image:url(''' + os.path.join(root_path, 'trash.png') + ''');border:0px;}
             ''')
         self.logout_pushButton.setStyleSheet(
             '''
-                QPushButton{image:url(''' + root_path + '''/logout_bt.png);border:0px;}
+                QPushButton{image:url(''' + os.path.join(root_path, 'logout_bt.png') + ''');border:0px;}
             ''')
         self.login_pushButton.setStyleSheet(
             '''
-                QPushButton{image:url(''' + root_path + '''/login_bt.png);border:0px;}
+                QPushButton{image:url(''' + os.path.join(root_path, 'login_bt.png') + ''');border:0px;}
             ''')
         self.re_pushButton.setStyleSheet(
             '''
-                QPushButton{image:url(''' + root_path + '''/refresh_1.png);border:0px;}
-                QPushButton:hover{image:url(''' + root_path + '''/refresh_2.png);border:0px;}
+                QPushButton{image:url(''' + os.path.join(root_path, 'refresh_1.png') + ''');border:0px;}
+                QPushButton:hover{image:url(''' + os.path.join(root_path, 'refresh_2.png') + ''');border:0px;}
             ''')
 
         self.retranslateUi(Dialog)

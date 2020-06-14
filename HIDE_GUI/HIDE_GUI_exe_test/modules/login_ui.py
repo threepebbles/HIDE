@@ -9,7 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+import sys, os
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -72,20 +72,20 @@ class Ui_Dialog(object):
         self.pw2set_pushButton.raise_()
 
         root_path = getattr(sys, '_MEIPASS')
-        print('_MEIPASS:', root_path)
-        
-        self.widget.setStyleSheet('image:url(' + root_path '/login.png);border:0px;')
+        print('root_path: ', root_path)
+
+        self.widget.setStyleSheet('image:url(' + os.path.join(root_path, 'login.png') + ');border:0px;')
         self.pushButton.setStyleSheet(
             '''
-                QPushButton{image:url(''' + root_path + '''/ok1.png);border:0px;}
+                QPushButton{image:url(''' + os.path.join(root_path, 'ok1.png') + ''');border:0px;}
             ''')
         self.pw2_pushButton.setStyleSheet(
             '''
-                QPushButton{image:url(''' + root_path + '''/ok2.png);border:0px;}
+                QPushButton{image:url(''' + os.path.join(root_path, 'ok2.png') + ''');border:0px;}
             ''')
         self.pw2set_pushButton.setStyleSheet(
             '''
-                QPushButton{image:url(''' + root_path + '''/pwset.png);border:0px;}
+                QPushButton{image:url(''' + os.path.join(root_path, 'pwset.png') + ''');border:0px;}
             ''')
         
         self.retranslateUi(Dialog)

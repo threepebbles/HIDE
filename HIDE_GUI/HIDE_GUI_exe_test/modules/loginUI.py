@@ -84,7 +84,7 @@ class MainDialog(QDialog, login_ui.Ui_Dialog):
             QMessageBox.about(self, "OFFLINE PASSWD SET", "password must be at least 4 characters")
             print('pwd set fail')
         elif Passwd.chk_set_before():
-            QMessageBox.about(self, "OFFLINE PASSWD SET", "ALREADY SET")
+            QMessageBox.about(self, "OFFLINE PASSWD SET", "password already exists")
             print('pwd already exists')
         else:
             QMessageBox.about(self, "OFFLINE PASSWD SET", "password set success!")

@@ -354,7 +354,7 @@ class HideDialog(QDialog, hide_ui.Ui_Dialog):
     def logout_NumClicked(self):
         #online 상태일 때만 사용
         logmsg = QMessageBox()
-        logmsg.setText("　　LogOut!　　　")
+        logmsg.setText("　　Log out!　　　")
         logmsg.setWindowTitle("LOGOUT")
         logmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
         logmsg.exec_()
@@ -365,11 +365,11 @@ class HideDialog(QDialog, hide_ui.Ui_Dialog):
 
     def login_NumClicked(self):
         #offline 상태일 때만 사용
-        logmsg = QMessageBox()
-        logmsg.setText("　　LogIn!　　　")
-        logmsg.setWindowTitle("LOGIN")
-        logmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
-        logmsg.exec_()
+        # logmsg = QMessageBox()
+        # logmsg.setText("　　Log in!　　　")
+        # logmsg.setWindowTitle("LOGIN")
+        # logmsg.setFont(QFont("Noto Sans KR", 12, QFont.Bold, italic=False))
+        # logmsg.exec_()
 
         login.main_dialog.show()
         self.close()

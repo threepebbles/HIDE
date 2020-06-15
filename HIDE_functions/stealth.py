@@ -30,6 +30,9 @@ def do_stealth(path, key='capstone2hide'):
 
     path = os.path.abspath(path)
 
+    if not os.path.exists(path):
+        return False
+
     if not bp.chk_ancestor_state(path):
         print('ancestor hide')
         return False
@@ -154,6 +157,9 @@ def un_stealth(path, key='capstone2hide'):
 
     path = os.path.abspath(path)
 
+    if not os.path.exists(path):
+        return False
+        
     if not bp.chk_ancestor_state(path):
         print('ancestor hide')
         return False

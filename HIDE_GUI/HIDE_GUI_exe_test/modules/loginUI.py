@@ -87,6 +87,7 @@ class MainDialog(QDialog, login_ui.Ui_Dialog):
             QMessageBox.about(self, "OFFLINE PASSWD SET", "ALREADY SET")
             print('pwd already exists')
         else:
+            QMessageBox.about(self, "OFFLINE PASSWD SET", "password set success!")
             Passwd.set_program_pw(offpwd)
             print('pwd set success')
 

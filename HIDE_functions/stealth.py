@@ -31,6 +31,7 @@ def do_stealth(path, key='capstone2hide'):
     path = os.path.abspath(path)
 
     if sm.get_state(path):
+        print('already hide')
         return False
 
     if not bp.chk_ancestor_state(path):

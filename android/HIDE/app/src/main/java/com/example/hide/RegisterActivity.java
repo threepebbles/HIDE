@@ -87,6 +87,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             }
         });
+
         passwordText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -118,6 +119,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             }
         });
+
         passwordCheckText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -165,7 +167,6 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        // confirm 버튼 리스너
         confirmButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
@@ -176,7 +177,6 @@ public class RegisterActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
 
                 if(!(form_user&&form_pw&&form_email)){
-//                    Toast.makeText(RegisterActivity.this, "Please Check the Format", Toast.LENGTH_SHORT).show();
                     String content ="";
                     if(!form_user){
                         content += "사용할 아이디를 입력하세요.";

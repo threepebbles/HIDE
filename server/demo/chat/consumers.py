@@ -14,7 +14,6 @@ class ChatConsumer(WebsocketConsumer):
         self.room_name = str(self.user)
         self.room_group_name = 'chat_%s' % str(self.user)
 
-        # print(self.scope)
         self.headers = dict(self.scope["headers"])
 
         if b'user-agent' in self.headers:
@@ -97,16 +96,7 @@ class ChatConsumer(WebsocketConsumer):
         print()
 
         text_data_json = json.loads(text_data)
-        if ("refresh" in text_data_json):
-            # Send message to room group
-            async_to_sync(self.channel_layer.group_send)(
-                self.room_group_name,
-                {
-                    'type': 'chat_message',
-                    'refresh': text_data_json["refresh"]
-                }
-            )
-        elif("file_path" in text_data_json):
+        if("file_path" in text_data_json and "file_state" in text_data_json):
             # Send message to room group
             async_to_sync(self.channel_layer.group_send)(
                 self.room_group_name,

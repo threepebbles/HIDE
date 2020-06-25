@@ -48,9 +48,7 @@ INSTALLED_APPS = (
     'rest_auth',
     'rest_auth.registration',
     'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.facebook',
+    'django_extensions',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -132,7 +130,6 @@ ACCOUNT_EMAIL_VERIFICATION = 'optional' # email verification은 안해도 로그
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        # 'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     )

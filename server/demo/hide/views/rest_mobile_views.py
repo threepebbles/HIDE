@@ -16,8 +16,6 @@ from channels.layers import get_channel_layer
 @login_required(login_url='rest_login')
 def rest_get_myfile_list(request):
     myfiles = list(Myfile.objects.filter(author_id=request.user.id).values())
-    # print(type(myfiles))
-    # print(myfiles)
     new_dict = {'result': 'success'}
     new_dict['my_file_list']= myfiles
 
@@ -25,4 +23,5 @@ def rest_get_myfile_list(request):
         return JsonResponse(new_dict,
                             json_dumps_params={'ensure_ascii': True})
     else:
-        return JsonResponse({'result': 'fail', 'message': 'use POST'}, json_dumps_params={'ensure_ascii': True})
+        return JsonResponse({'result': 'fail', 'message': 'use POST'},
+                            rjson_dumps_params={'ensure_ascii': True})

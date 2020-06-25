@@ -54,19 +54,16 @@ public class PathListAdapter extends BaseAdapter {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    //여기에다가 이제 신호주고 받아서 성공하면 토스트메시지 출력
                     hideSwitch.setEnabled(false);
                     modifyRequest.Websocket(token,listPath.getText().toString(),isChecked);
                     Toast.makeText(context, "전송완료, 잠시 후 새로고침 해주세요", Toast.LENGTH_SHORT).show();
                 }else{
-                    // 마찬가지
                     hideSwitch.setEnabled(false);
                     modifyRequest.Websocket(token,listPath.getText().toString(),isChecked);
                     Toast.makeText(context, "전송완료, 잠시 후 새로고침 해주세요", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
         v.setTag(pathList.get(position).getPath());
         return v;
     }

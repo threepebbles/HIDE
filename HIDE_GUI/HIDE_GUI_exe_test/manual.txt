@@ -1,0 +1,2 @@
+If you want to create a new executable file with the code you modified, enter "pyinstaller main.spec".
+Don't enter "pyinstaller -w -F main.py". main.spec will be overwritten.

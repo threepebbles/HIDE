@@ -9,15 +9,13 @@ import StateManagement as sm
 _LINK_DIRECTORY = os.path.abspath(os.path.join(os.path.join('C:/Users/' + os.getenv('USERNAME')), 'Links/link.{59031a47-3f72-44a7-89c5-5595fe6b30ee}'))
 
 
+# get hash path name
 def get_hashed_path(path):
     return hashlib.sha256(path.encode()).hexdigest()
 
 
-# _directory 경로가 이미 생성되어있어야 함
-# main 파일에서 생성시켜놔야함
+# create _LINK_DIRECTORY
 def create_list_file(path, key):
-    if not os.path.isdir(_LINK_DIRECTORY):
-        os.mkdir(_LINK_DIRECTORY)
     if not os.path.isdir(_LINK_DIRECTORY):
         os.mkdir(_LINK_DIRECTORY)
 
@@ -28,9 +26,13 @@ def create_list_file(path, key):
 
 # stealth 기능
 def do_stealth(path, key='capstone2hide'):
-    global f # 주어진 인자 path에 대해서 수행되는 모든 링크 내용을 기록하는 파일
+    global f # 주어진 인자 path에 대해서 수행되는 모든 링크 내용을 기록
 
     path = os.path.abspath(path)
+
+    if sm.get_state(path):
+        print('already hide')
+        return False
 
     if not bp.chk_ancestor_state(path):
         print('ancestor hide')
@@ -40,7 +42,7 @@ def do_stealth(path, key='capstone2hide'):
     key = encrypt.make_pass(path, key)
     f = open(tmp_file, 'w')
     file_or_folder = 'folder' if os.path.isdir(path) else 'file'
-    f.write('{}\n'.format(file_or_folder)) # 첫줄 key
+    f.write('{}\n'.format(file_or_folder))
 
     rtn = False
     if os.path.isfile(path):
@@ -50,18 +52,22 @@ def do_stealth(path, key='capstone2hide'):
     f.close()
 
     if not rtn:
+        # fail to hide
         os.remove(tmp_file)
         return False
-    if not encrypt.encrypt_file(key, tmp_file): # 암호화 실패
-        # 지금 생성된 link 파일 삭제
+
+    if not encrypt.encrypt_file(key, tmp_file):
+        # fail to encrypt
         if os.path.isdir(path): del_linkdir(tmp_file)
         else: del_linkfile(tmp_file)
-        os.remove(tmp_file) # list 파일 삭제
+        os.remove(tmp_file)
         return False
-    elif rtn and os.path.isfile(path):
-        os.remove(path)
-    elif rtn and os.path.isdir(path):
-        shutil.rmtree(path)
+
+    elif rtn:
+        if os.path.isfile(path):
+            os.remove(path)
+        else: # os.path.isdir(path)
+            shutil.rmtree(path)
     
     sm.stealth_state(path)
     return rtn
@@ -90,13 +96,14 @@ def del_linkdir(list_file):
     return
 
 
+# hide each files
 def file_stealth(path):
     try:
-        # 하드 링크될 파일의 이름
-        link_name = os.path.join(_LINK_DIRECTORY, path.replace(':', '_').replace('\\', '__'))
-        link_name = link_name.replace('\\', '/')
-        # 링크파일의 이름(경로) 해시
-        hash_name = get_hashed_path(link_name)
+        # 하드 링크될 원본 파일
+        tmp = os.path.join(_LINK_DIRECTORY, path.replace(':', '_').replace('\\', '__'))
+        tmp = tmp.replace('\\', '/')
+        # 해시된 링크파일의 파일명
+        hash_name = get_hashed_path(tmp)
         link_name = os.path.join(_LINK_DIRECTORY, hash_name)
         
         # 파일 하드링크
@@ -115,6 +122,7 @@ def file_stealth(path):
     return True
 
 
+# hide folder
 def dir_stealth(path):
     # 입력된 경로의 하위 모든 파일 및 폴더에 대해서 수행
     for root, dirs, files in os.walk(path):
@@ -150,6 +158,9 @@ def un_stealth(path, key='capstone2hide'):
 
     path = os.path.abspath(path)
 
+    if not sm.get_state(path):
+        return False
+
     if not bp.chk_ancestor_state(path):
         print('ancestor hide')
         return False
@@ -166,7 +177,6 @@ def un_stealth(path, key='capstone2hide'):
     # list파일을 복호화
     key = encrypt.make_pass(path, key)
     if not encrypt.decrypt_file(key, tmp_file):
-        print('decrypt error')
         return False
 
     # list파일에서 읽어와서 모든 파일, 폴더에 대해서 역으로 복구

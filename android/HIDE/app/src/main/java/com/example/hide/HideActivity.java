@@ -85,7 +85,7 @@ public class HideActivity extends AppCompatActivity {
         ListCheck(sid);
     }
 
-    private void Logout(String value){
+    private void Logout(String value){ // 로그아웃 & 자동 로그인 해제
         HashMap<String,String> data = new HashMap<>();
         data.put("token",value);
         Call<Key> call = serverRequestApi.Logout(data);
@@ -139,7 +139,7 @@ public class HideActivity extends AppCompatActivity {
         });
     }
 
-    private void CheckNetwork(String token){
+    private void CheckNetwork(String token){ // PC 네트워크가 서버랑 연결되어 있는 지 확인함수
         HashMap<String,String> data = new HashMap<>();
         data.put("Cookie",token);
         Call<State> call = serverRequestApi.NetworkCheck(data);
@@ -190,7 +190,7 @@ public class HideActivity extends AppCompatActivity {
         });
     }
 
-    private void ListCheck(String token){
+    private void ListCheck(String token){ // 은닉 리스트 불러오기
         HashMap<String,String> data = new HashMap<>();
         data.put("Cookie",token);
         Call<MyFile> call = serverRequestApi.ListCheck(data);
@@ -243,7 +243,7 @@ public class HideActivity extends AppCompatActivity {
     private long lastTimeBackPressed;
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed(){ // 뒤로가기 2번 누르면 앱 종료 기능
         if(System.currentTimeMillis() - lastTimeBackPressed < 3000){
             finish();
             return;
